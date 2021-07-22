@@ -1,0 +1,213 @@
+{% extends "layout.html" %}
+{% block content %}
+    {% if student %}
+        <div>
+            {% with messages = get_flashed_messages(with_categories=true, category_filter=['danger', 'success']) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" style="padding-top: 9px">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <h3 class="text-center">{{ student.name }}</h3>
+        </div>
+        <!-- PANEL TOGGLES -->
+        <div class="container d-flex flex-wrap">
+            <button class="btn btn-dark flex-fill col-md-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#CredentialsButton"
+                    aria-expanded="false" aria-controls="CredentialsButton" style="margin: 3px">
+                Credentials
+            </button>
+            <button class="btn btn-dark flex-fill col-md-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#AttendanceButton"
+                    aria-expanded="false" aria-controls="AttendanceButton" style="margin: 3px">
+                Attendance
+            </button>
+            <button class="btn btn-dark flex-fill col-md-3" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#PaymentRecordButton"
+                    aria-expanded="false" aria-controls="PaymentRecordButton" style="margin: 3px">
+                Payment
+            </button>
+        </div>
+        <!-- CREDENTIALS PANEL -->
+        {% set show_credentials = '' %}
+        {% if panel_active.get('credentials') %}
+            {% set show_credentials = ' in show' %}
+        {% endif %}
+        <div class="collapse multi-collapse{{ show_credentials }}" id="CredentialsButton">
+            <div class="card card-body">
+                <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
+                    {{ a_student_credentials_form.hidden_tag() }}
+                    <legend class="border-bottom mb-2 h4">Credentials</legend>
+                    <div class="form-group col-md-4">
+                        {{ a_student_credentials_form.name.label(class="form-control-label") }}
+                        {% if a_student_credentials_form.name.errors %}
+                            {{ a_student_credentials_form.name(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in a_student_credentials_form.name.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ a_student_credentials_form.name(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ a_student_credentials_form.s_phone.label(class="form-control-label") }}
+                        {% if a_student_credentials_form.s_phone.errors %}
+                            {{ a_student_credentials_form.s_phone(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in a_student_credentials_form.s_phone.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ a_student_credentials_form.s_phone(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ a_student_credentials_form.p_phone.label(class="form-control-label") }}
+                        {% if a_student_credentials_form.p_phone.errors %}
+                            {{ a_student_credentials_form.p_phone(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in a_student_credentials_form.p_phone.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ a_student_credentials_form.p_phone(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ a_student_credentials_form.p_rel.label(class="form-control-label") }}
+                        {% if a_student_credentials_form.p_rel.errors %}
+                            {{ a_student_credentials_form.p_rel(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in a_student_credentials_form.p_rel.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ a_student_credentials_form.p_rel(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ a_student_credentials_form.lesson_day.label(class="form-control-label") }}
+                        {% if a_student_credentials_form.lesson_day.errors %}
+                            {{ a_student_credentials_form.lesson_day(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in a_student_credentials_form.lesson_day.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ a_student_credentials_form.lesson_day(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ a_student_credentials_form.lesson_time.label(class="form-control-label") }}
+                        {% if a_student_credentials_form.lesson_time.errors %}
+                            {{ a_student_credentials_form.lesson_time(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in a_student_credentials_form.lesson_time.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ a_student_credentials_form.lesson_time(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ a_student_credentials_form.lesson_duration.label(class="form-control-label") }}
+                        {% if a_student_credentials_form.lesson_duration.errors %}
+                            {{ a_student_credentials_form.lesson_duration(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in a_student_credentials_form.lesson_duration.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ a_student_credentials_form.lesson_duration(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ a_student_credentials_form.lesson_fee.label(class="form-control-label") }}
+                        {% if a_student_credentials_form.lesson_fee.errors %}
+                            {{ a_student_credentials_form.lesson_fee(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in a_student_credentials_form.lesson_fee.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ a_student_credentials_form.lesson_fee(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ a_student_credentials_form.remarks.label(class="form-control-label") }}
+                        {% if a_student_credentials_form.remarks.errors %}
+                            {{ a_student_credentials_form.remarks(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in a_student_credentials_form.remarks.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ a_student_credentials_form.remarks(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group" style="padding-top: 5px">
+                        {{ a_student_credentials_form.a_student_credentials_submit(class="btn btn-dark") }}
+                        <a href="{{ url_for('student_manager_selected', student_username=student.username, page='credentials') }}"
+                           class="btn btn-outline-secondary" style="margin-left: 5px">Discard Unsaved Changes</a>
+                    </div>
+                </form>
+                <div class="d-flex flex-wrap">
+                    {% if student.active %}
+                        <a href="{{ url_for('make_inactive', student_username=student.username) }}"
+                           class="btn btn-outline-danger flex-fill col-md-4"
+                           style="margin-top: 15px; margin-right: 5px">Make Inactive</a>
+                    {% else %}
+                        <a href="{{ url_for('make_active', student_username=student.username) }}"
+                           class="btn btn-outline-success flex-fill col-md-4"
+                           style="margin-top: 15px; margin-right: 5px">Make Active</a>
+                    {% endif %}
+                    <button type="button" class="btn btn-outline-danger flex-fill col-md-4" data-bs-toggle="modal"
+                            data-bs-target="#DeleteButton" style="margin-top: 15px; margin-left: 5px">
+                        Remove Student
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- BACK BUTTON -->
+        <div class="container d-flex flex-wrap">
+            <a href="{{ url_for('student_manager') }}" class="btn btn-light flex-fill" role="button"
+               aria-disabled="true"
+               style="margin-top: 10px; margin-bottom: 10px">
+                Back
+            </a>
+        </div>
+    {% endif %}
+    <div class="modal fade" id="DeleteButton" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Confirm Removal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    This action will likely affect the insights and analytics generated from past tutorial sessions.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Regret</button>
+                    <form method="POST" action="{{ url_for('remove_student', student_username=student.username) }}">
+                        <input type="submit" class="btn btn-danger" value="Remove Anyway">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

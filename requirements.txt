@@ -1,0 +1,7 @@
+flask~=2.0.1
+flask_wtf
+flask_login
+flask_sqlalchemy
+flask_bcrypt
+wtforms~=2.3.3
+utcnow~=0.3.0

@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container d-flex flex-wrap">
+        {% if current_user.admin %}
+            {% for p_name, p_des, p_link in site.get('a_panels') %}
+                <div class="card col-md-4 flex-fill" style="margin: 5px">
+                    <div class="card-body">
+                        <h5 class="card-title border-bottom">{{ p_name }}</h5>
+                        <p class="card-text">{{ p_des }}</p>
+                        <a href="{{ url_for(p_link) }}" class="btn btn-dark">Launch</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            {% for p_name, p_des, p_link in site.get('s_panels') %}
+                <div class="card col-md-3 flex-fill" style="margin: 5px">
+                    <div class="card-body">
+                        <h5 class="card-title border-bottom">{{ p_name }}</h5>
+                        <p class="card-text">{{ p_des }}</p>
+                        <a href="{{ url_for(p_link) }}" class="btn btn-dark">Launch</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+{% endblock content %}
