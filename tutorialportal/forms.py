@@ -76,8 +76,10 @@ class AStudentCredentialsForm(FlaskForm):
         if not re.search('^[5679]\d{7}$', p_phone.data) and not p_phone.data == '':
             raise ValidationError('Field must be an 8-digit HK phone number.')
 
+
 class AddAttendanceForm(FlaskForm):
-    lesson_date = DateField('Date', default=datetime.datetime.now().date(), format='%Y-%m-%d', validators=[DataRequired(message='Invalid date. (YYYY-MM-DD)')])
+    lesson_date = DateField('Date', default=datetime.datetime.now().date(), format='%Y-%m-%d',
+                            validators=[DataRequired(message='Invalid date. (YYYY-MM-DD)')])
     lesson_time = StringField('Time', validators=[DataRequired()])
     lesson_duration = StringField('Duration (hrs)', validators=[DataRequired()])
     lesson_fee = FloatField('Charge ($)', validators=[DataRequired()])
