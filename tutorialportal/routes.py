@@ -110,12 +110,20 @@ def student_manager_selected(student_username, page=None):
                 student.lesson_fee = a_student_credentials_form.lesson_fee.data
                 student.remark = a_student_credentials_form.remarks.data
                 db.session.commit()
-                flash('Credentials updated.', 'success')
+                flash('Credentials updated for {}.'.format(student.name), 'success')
             if page is None:
                 panel_active['credentials'] = True
         elif add_attendance_form.add_attendance_submit.data:
             if add_attendance_form.validate_on_submit():
-                flash('Attendance added.', 'success')
+                # Possibly add a check in timeslot overlapping
+                attendance = Attendance(username=student.username, lesson_date=add_attendance_form.lesson_date.data,
+                                        lesson_time=add_attendance_form.lesson_time.data,
+                                        lesson_fee=add_attendance_form.lesson_fee.data,
+                                        lesson_duration=add_attendance_form.lesson_duration.data,
+                                        remark=add_attendance_form.remark.data)
+                db.session.add(attendance)
+                db.session.commit()
+                flash('Attendance added for {}.'.format(student.name), 'success')
             if page is None:
                 panel_active['attendance'] = True
         else:

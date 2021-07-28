@@ -1,3 +1,5 @@
+import datetime
+
 from tutorialportal import db, login_manager
 from utcnow import utcnow
 from flask_login import UserMixin
@@ -49,7 +51,7 @@ class Student(db.Model):
 class Attendance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), db.ForeignKey('student.username'), nullable=False)
-    dt_attendance = db.Column(db.DateTime, nullable=False, default=utcnow.get())
+    dt_attendance = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow())
     lesson_date = db.Column(db.String(10), nullable=False)
     lesson_time = db.Column(db.String(5), nullable=False)
     lesson_duration = db.Column(db.String(5), nullable=False)
@@ -57,7 +59,7 @@ class Attendance(db.Model):
     remark = db.Column(db.Text)
 
     def __repr__(self):
-        return 'Attendance({}, {}, {})'.format(self.id, self.username, self.dt_lesson)
+        return 'Attendance({}, {}, {}, {})'.format(self.id, self.username, self.lesson_date, self.lesson_time)
 
 
 class FeeSubmission(db.Model):
