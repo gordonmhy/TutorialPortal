@@ -120,7 +120,7 @@ def student_manager_selected(student_username, page=None):
                                         lesson_time=add_attendance_form.lesson_time.data,
                                         lesson_fee=add_attendance_form.lesson_fee.data,
                                         lesson_duration=add_attendance_form.lesson_duration.data,
-                                        remark=add_attendance_form.remark.data)
+                                        remark=add_attendance_form.remarks.data)
                 db.session.add(attendance)
                 db.session.commit()
                 flash('Attendance added for {}.'.format(student.name), 'success')

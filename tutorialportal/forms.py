@@ -77,10 +77,11 @@ class AStudentCredentialsForm(FlaskForm):
             raise ValidationError('Field must be an 8-digit HK phone number.')
 
 class AddAttendanceForm(FlaskForm):
-    lesson_date = DateField('Date', default=datetime.datetime.utcnow().date(), format='%Y-%m-%d', validators=[DataRequired(message='Invalid date. (YYYY-MM-DD)')])
+    lesson_date = DateField('Date', default=datetime.datetime.now().date(), format='%Y-%m-%d', validators=[DataRequired(message='Invalid date. (YYYY-MM-DD)')])
     lesson_time = StringField('Time', validators=[DataRequired()])
     lesson_duration = StringField('Duration (hrs)', validators=[DataRequired()])
     lesson_fee = FloatField('Charge ($)', validators=[DataRequired()])
+    remarks = TextAreaField('Remarks', render_kw={"rows": 1})
     add_attendance_submit = SubmitField('Submit')
 
     def validate_lesson_time(self, lesson_time):

@@ -1,7 +1,6 @@
 import datetime
 
 from tutorialportal import db, login_manager
-from utcnow import utcnow
 from flask_login import UserMixin
 
 
@@ -65,7 +64,7 @@ class Attendance(db.Model):
 class FeeSubmission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), db.ForeignKey('student.username'), nullable=False)
-    dt_submission = db.Column(db.DateTime, nullable=False, default=utcnow.get())
+    dt_submission = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
     amount = db.Column(db.Float, nullable=False)
     remark = db.Column(db.Text)
 
