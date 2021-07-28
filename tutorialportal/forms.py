@@ -1,6 +1,7 @@
+import datetime
 import re
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, FloatField, TextAreaField
+from wtforms import StringField, PasswordField, SubmitField, FloatField, TextAreaField, DateField
 from wtforms.validators import DataRequired, Length, ValidationError
 
 
@@ -64,7 +65,7 @@ class AStudentCredentialsForm(FlaskForm):
             raise ValidationError('Invalid day(s)!  E.g., \'Tue,Thur\'')
 
     def validate_lesson_time(self, lesson_time):
-        if not re.search('^\d{2}:\d{2}$', lesson_time.data):
+        if not re.search('^[012]\d:[0-5]\d$', lesson_time.data):
             raise ValidationError('Invalid lesson start time. Must be XX:XX, e.g., 13:30')
 
     def validate_s_phone(self, s_phone):
@@ -74,3 +75,14 @@ class AStudentCredentialsForm(FlaskForm):
     def validate_p_phone(self, p_phone):
         if not re.search('^[5679]\d{7}$', p_phone.data) and not p_phone.data == '':
             raise ValidationError('Field must be an 8-digit HK phone number.')
+
+class AddAttendanceForm(FlaskForm):
+    lesson_date = DateField('Date', default=datetime.datetime.utcnow().date(), format='%Y-%m-%d', validators=[DataRequired(message='Invalid date. (YYYY-MM-DD)')])
+    lesson_time = StringField('Time', validators=[DataRequired()])
+    lesson_duration = StringField('Duration (hrs)', validators=[DataRequired()])
+    lesson_fee = FloatField('Charge ($)', validators=[DataRequired()])
+    add_attendance_submit = SubmitField('Submit')
+
+    def validate_lesson_time(self, lesson_time):
+        if not re.search('^[012]\d:[0-5]\d$', lesson_time.data):
+            raise ValidationError('Invalid lesson time. Must be XX:XX, e.g., 13:30')

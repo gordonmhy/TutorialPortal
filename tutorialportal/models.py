@@ -50,7 +50,9 @@ class Attendance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(25), db.ForeignKey('student.username'), nullable=False)
     dt_attendance = db.Column(db.DateTime, nullable=False, default=utcnow.get())
-    dt_lesson = db.Column(db.String(40), nullable=False)
+    lesson_date = db.Column(db.String(10), nullable=False)
+    lesson_time = db.Column(db.String(5), nullable=False)
+    lesson_duration = db.Column(db.String(5), nullable=False)
     lesson_fee = db.Column(db.Float, nullable=False)
     remark = db.Column(db.Text)
 

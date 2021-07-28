@@ -3,7 +3,7 @@ import random
 from flask import render_template, redirect, url_for, flash, request, abort
 from tutorialportal import app, db, bcrypt
 from tutorialportal.utils import site
-from tutorialportal.forms import LoginForm, AddStudentForm, AStudentCredentialsForm
+from tutorialportal.forms import LoginForm, AddStudentForm, AStudentCredentialsForm, AddAttendanceForm
 from tutorialportal.models import User, Admin, Student, Attendance, FeeSubmission
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -97,6 +97,7 @@ def student_manager_selected(student_username, page=None):
     student = Student.query.filter_by(username=student_username).first()
     if student:
         a_student_credentials_form = AStudentCredentialsForm()
+        add_attendance_form = AddAttendanceForm()
         if a_student_credentials_form.a_student_credentials_submit.data:
             if a_student_credentials_form.validate_on_submit():
                 student.name = a_student_credentials_form.name.data
@@ -112,8 +113,11 @@ def student_manager_selected(student_username, page=None):
                 flash('Credentials updated.', 'success')
             if page is None:
                 panel_active['credentials'] = True
-        # elif another form:
-        #    haha
+        elif add_attendance_form.add_attendance_submit.data:
+            if add_attendance_form.validate_on_submit():
+                flash('Attendance added.', 'success')
+            if page is None:
+                panel_active['attendance'] = True
         else:
             if page is None:
                 panel_active['attendance'] = True
@@ -126,9 +130,13 @@ def student_manager_selected(student_username, page=None):
             a_student_credentials_form.lesson_duration.data = student.lesson_duration
             a_student_credentials_form.lesson_fee.data = student.lesson_fee
             a_student_credentials_form.remarks.data = student.remark
+            add_attendance_form.lesson_time.data = student.lesson_time
+            add_attendance_form.lesson_duration.data = student.lesson_duration
+            add_attendance_form.lesson_fee.data = student.lesson_fee
         return render_template('student_manager_selected.html', page_name='Student Manager', site=site,
                                panel_active=panel_active, student=student,
-                               a_student_credentials_form=a_student_credentials_form)
+                               a_student_credentials_form=a_student_credentials_form,
+                               add_attendance_form=add_attendance_form)
     abort(404)
 
 

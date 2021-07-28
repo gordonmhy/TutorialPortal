@@ -181,6 +181,74 @@
                 </div>
             </div>
         </div>
+        <!-- Attendance PANEL -->
+        {% set show_attendance = '' %}
+        {% if panel_active.get('attendance') %}
+            {% set show_attendance = ' in show' %}
+        {% endif %}
+        <div class="collapse multi-collapse{{ show_attendance }}" id="AttendanceButton">
+            <div class="card card-body">
+                <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
+                    {{ add_attendance_form.hidden_tag() }}
+                    <legend class="border-bottom mb-2 h4">Add Attendance</legend>
+                    <div class="form-group col-md-3">
+                        {{ add_attendance_form.lesson_date.label(class="form-control-label") }}
+                        {% if add_attendance_form.lesson_date.errors %}
+                            {{ add_attendance_form.lesson_date(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in add_attendance_form.lesson_date.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ add_attendance_form.lesson_date(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-3">
+                        {{ add_attendance_form.lesson_time.label(class="form-control-label") }}
+                        {% if add_attendance_form.lesson_time.errors %}
+                            {{ add_attendance_form.lesson_time(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in add_attendance_form.lesson_time.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ add_attendance_form.lesson_time(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-3">
+                        {{ add_attendance_form.lesson_duration.label(class="form-control-label") }}
+                        {% if add_attendance_form.lesson_duration.errors %}
+                            {{ add_attendance_form.lesson_duration(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in add_attendance_form.lesson_duration.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ add_attendance_form.lesson_duration(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group col-md-3">
+                        {{ add_attendance_form.lesson_fee.label(class="form-control-label") }}
+                        {% if add_attendance_form.lesson_fee.errors %}
+                            {{ add_attendance_form.lesson_fee(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in add_attendance_form.lesson_fee.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ add_attendance_form.lesson_fee(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="form-group" style="padding-top: 5px">
+                        {{ add_attendance_form.add_attendance_submit(class="btn btn-dark") }}
+                    </div>
+                </form>
+            </div>
+        </div>
         <!-- BACK BUTTON -->
         <div class="container d-flex flex-wrap">
             <a href="{{ url_for('student_manager') }}" class="btn btn-light flex-fill" role="button"
