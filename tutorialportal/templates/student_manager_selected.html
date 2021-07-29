@@ -188,6 +188,54 @@
         {% endif %}
         <div class="collapse multi-collapse{{ show_attendance }}" id="AttendanceButton">
             <div class="card card-body">
+                <h3 class="border-bottom mb-2 h4">Attendance Record</h3>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Date</th>
+                        <th scope="col">Time</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Fee</th>
+                        <th scope="col">Options</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for a_record in student_attendance.items %}
+                        <tr style="vertical-align: middle">
+                            <th scope="row">{{ a_record.lesson_date }}</th>
+                            <td>{{ a_record.lesson_time }}</td>
+                            <td>{{ a_record.lesson_duration }} hrs</td>
+                            <td>${{ a_record.lesson_fee|round }}</td>
+                            <td>
+                                <!-- TODO: Button for activating a modal that contains modify and delete record functionalities-->
+                                <button class="btn btn-outline-secondary">More</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div>
+
+                    {% for page_number in student_attendance.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                        {% if page_number %}
+                            {% if student_attendance.page == page_number %}
+                                <a class="btn btn-dark col-1" href="
+        {{ url_for('student_manager_selected', student_username=student.username, p=page_number, page='attendance') }}">
+                                    {{ page_number }}</a>
+                            {% else %}
+                                <a class="btn btn-outline-dark col-1" href="
+        {{ url_for('student_manager_selected', student_username=student.username, p=page_number, page='attendance') }}">
+                                    {{ page_number }}</a>
+                            {% endif %}
+                        {% else %}
+                            <button class="btn btn-outline-dark col-1">...</button>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="collapse multi-collapse{{ show_attendance }}" id="AttendanceButton">
+            <div class="card card-body">
                 <h4 class="border-bottom mb-2 h4">Add Attendance</h4>
                 <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
                     {{ add_attendance_form.hidden_tag() }}
@@ -259,15 +307,10 @@
                     <div class="form-group" style="padding-top: 5px">
                         {{ add_attendance_form.add_attendance_submit(class="btn btn-dark") }}
                         <a class="btn btn-outline-secondary" style="margin-left: 3px"
-                           href="{{ url_for('student_manager_selected', student_username=student.username, page='attendance') }}">Revert
-                            Input</a>
+                           href="{{ url_for('student_manager_selected', student_username=student.username, page='attendance') }}">Discard
+                            Unsaved Input</a>
                     </div>
                 </form>
-            </div>
-        </div>
-        <div class="collapse multi-collapse{{ show_attendance }}" id="AttendanceButton">
-            <div class="card card-body">
-                <h3 class="border-bottom mb-2 h4">Attendance Record</h3>
             </div>
         </div>
         <!-- BACK BUTTON -->

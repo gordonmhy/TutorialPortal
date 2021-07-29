@@ -94,58 +94,62 @@ def student_manager_selected(student_username, page=None):
         panel_active[page] = True
     if request.method == 'GET' and page is None:
         panel_active['attendance'] = True
-    student = Student.query.filter_by(username=student_username).first()
-    if student:
-        a_student_credentials_form = AStudentCredentialsForm()
-        add_attendance_form = AddAttendanceForm()
-        if a_student_credentials_form.a_student_credentials_submit.data:
-            if a_student_credentials_form.validate_on_submit():
-                student.name = a_student_credentials_form.name.data
-                student.s_phone = a_student_credentials_form.s_phone.data
-                student.p_phone = a_student_credentials_form.p_phone.data
-                student.p_rel = a_student_credentials_form.p_rel.data
-                student.lesson_day = a_student_credentials_form.lesson_day.data
-                student.lesson_time = a_student_credentials_form.lesson_time.data
-                student.lesson_duration = a_student_credentials_form.lesson_duration.data
-                student.lesson_fee = a_student_credentials_form.lesson_fee.data
-                student.remark = a_student_credentials_form.remarks.data
-                db.session.commit()
-                flash('Credentials updated for {}.'.format(student.name), 'success')
-            if page is None:
-                panel_active['credentials'] = True
-        elif add_attendance_form.add_attendance_submit.data:
-            if add_attendance_form.validate_on_submit():
-                # Possibly add a check in timeslot overlapping
-                attendance = Attendance(username=student.username, lesson_date=add_attendance_form.lesson_date.data,
-                                        lesson_time=add_attendance_form.lesson_time.data,
-                                        lesson_fee=add_attendance_form.lesson_fee.data,
-                                        lesson_duration=add_attendance_form.lesson_duration.data,
-                                        remark=add_attendance_form.remarks.data)
-                db.session.add(attendance)
-                db.session.commit()
-                flash('Attendance added for {}.'.format(student.name), 'success')
-            if page is None:
-                panel_active['attendance'] = True
+    student = Student.query.filter_by(username=student_username).first_or_404()
+    a_student_credentials_form = AStudentCredentialsForm()
+    add_attendance_form = AddAttendanceForm()
+    if a_student_credentials_form.a_student_credentials_submit.data:
+        if a_student_credentials_form.validate_on_submit():
+            student.name = a_student_credentials_form.name.data
+            student.s_phone = a_student_credentials_form.s_phone.data
+            student.p_phone = a_student_credentials_form.p_phone.data
+            student.p_rel = a_student_credentials_form.p_rel.data
+            student.lesson_day = a_student_credentials_form.lesson_day.data
+            student.lesson_time = a_student_credentials_form.lesson_time.data
+            student.lesson_duration = a_student_credentials_form.lesson_duration.data
+            student.lesson_fee = a_student_credentials_form.lesson_fee.data
+            student.remark = a_student_credentials_form.remarks.data
+            db.session.commit()
+            flash('Credentials updated for {}.'.format(student.name), 'success')
+        if page is None:
+            panel_active['credentials'] = True
+    elif add_attendance_form.add_attendance_submit.data:
+        if add_attendance_form.validate_on_submit():
+            # Possibly add a check in timeslot overlapping
+            attendance = Attendance(username=student.username, lesson_date=add_attendance_form.lesson_date.data,
+                                    lesson_time=add_attendance_form.lesson_time.data,
+                                    lesson_fee=add_attendance_form.lesson_fee.data,
+                                    lesson_duration=add_attendance_form.lesson_duration.data,
+                                    remark=add_attendance_form.remarks.data)
+            db.session.add(attendance)
+            db.session.commit()
+            flash('Attendance added for {}.'.format(student.name), 'success')
         else:
-            if page is None:
-                panel_active['attendance'] = True
-            a_student_credentials_form.name.data = student.name
-            a_student_credentials_form.s_phone.data = student.s_phone
-            a_student_credentials_form.p_phone.data = student.p_phone
-            a_student_credentials_form.p_rel.data = student.p_rel
-            a_student_credentials_form.lesson_day.data = student.lesson_day
-            a_student_credentials_form.lesson_time.data = student.lesson_time
-            a_student_credentials_form.lesson_duration.data = student.lesson_duration
-            a_student_credentials_form.lesson_fee.data = student.lesson_fee
-            a_student_credentials_form.remarks.data = student.remark
-            add_attendance_form.lesson_time.data = student.lesson_time
-            add_attendance_form.lesson_duration.data = student.lesson_duration
-            add_attendance_form.lesson_fee.data = student.lesson_fee
-        return render_template('student_manager_selected.html', page_name='Student Manager', site=site,
-                               panel_active=panel_active, student=student,
-                               a_student_credentials_form=a_student_credentials_form,
-                               add_attendance_form=add_attendance_form)
-    abort(404)
+            flash('Some of your input may be invalid.', 'danger')
+        if page is None:
+            panel_active['attendance'] = True
+    else:
+        if page is None:
+            panel_active['attendance'] = True
+        a_student_credentials_form.name.data = student.name
+        a_student_credentials_form.s_phone.data = student.s_phone
+        a_student_credentials_form.p_phone.data = student.p_phone
+        a_student_credentials_form.p_rel.data = student.p_rel
+        a_student_credentials_form.lesson_day.data = student.lesson_day
+        a_student_credentials_form.lesson_time.data = student.lesson_time
+        a_student_credentials_form.lesson_duration.data = student.lesson_duration
+        a_student_credentials_form.lesson_fee.data = student.lesson_fee
+        a_student_credentials_form.remarks.data = student.remark
+        add_attendance_form.lesson_time.data = student.lesson_time
+        add_attendance_form.lesson_duration.data = student.lesson_duration
+        add_attendance_form.lesson_fee.data = student.lesson_fee
+    # Student Attendance Record
+    attendance_page = request.args.get('p', 1, type=int)
+    student_attendance = Attendance.query.filter_by(username=student.username).order_by(
+        Attendance.lesson_date.desc()).paginate(page=attendance_page, per_page=7)
+    return render_template('student_manager_selected.html', page_name='Student Manager', site=site,
+                           panel_active=panel_active, student=student,
+                           a_student_credentials_form=a_student_credentials_form,
+                           add_attendance_form=add_attendance_form, student_attendance=student_attendance)
 
 
 @app.route('/manager/admin')
