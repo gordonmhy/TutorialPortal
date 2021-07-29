@@ -38,9 +38,9 @@
         {% endif %}
         <div class="collapse multi-collapse{{ show_credentials }}" id="CredentialsButton">
             <div class="card card-body">
+                <h4 class="border-bottom mb-2 h4">Credentials</h4>
                 <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
                     {{ a_student_credentials_form.hidden_tag() }}
-                    <legend class="border-bottom mb-2 h4">Credentials</legend>
                     <div class="form-group col-md-4">
                         {{ a_student_credentials_form.name.label(class="form-control-label") }}
                         {% if a_student_credentials_form.name.errors %}
@@ -188,9 +188,9 @@
         {% endif %}
         <div class="collapse multi-collapse{{ show_attendance }}" id="AttendanceButton">
             <div class="card card-body">
+                <h4 class="border-bottom mb-2 h4">Add Attendance</h4>
                 <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
                     {{ add_attendance_form.hidden_tag() }}
-                    <legend class="border-bottom mb-2 h4">Add Attendance</legend>
                     <div class="form-group col-md-4">
                         {{ add_attendance_form.lesson_date.label(class="form-control-label") }}
                         {% if add_attendance_form.lesson_date.errors %}
@@ -258,8 +258,16 @@
                     </div>
                     <div class="form-group" style="padding-top: 5px">
                         {{ add_attendance_form.add_attendance_submit(class="btn btn-dark") }}
+                        <a class="btn btn-outline-secondary" style="margin-left: 3px"
+                           href="{{ url_for('student_manager_selected', student_username=student.username, page='attendance') }}">Revert
+                            Input</a>
                     </div>
                 </form>
+            </div>
+        </div>
+        <div class="collapse multi-collapse{{ show_attendance }}" id="AttendanceButton">
+            <div class="card card-body">
+                <h3 class="border-bottom mb-2 h4">Attendance Record</h3>
             </div>
         </div>
         <!-- BACK BUTTON -->

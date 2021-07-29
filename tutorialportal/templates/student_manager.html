@@ -31,7 +31,7 @@
         {% endif %}
         <div class="collapse multi-collapse{{ show_select_student }}" id="SelectStudentButton">
             <div class="card card-body">
-                <legend class="border-bottom mb-2 h4">Active Students</legend>
+                <h4 class="border-bottom mb-2 h4">Active Students</h4>
                 <div>
                     {% if active_students|count == 0 %}
                         <button class="btn btn-outline-secondary col-auto" type="button" data-bs-toggle="collapse"
@@ -47,7 +47,7 @@
                            style="min-width: 170px; margin-bottom: 5px">{{ name }}</a>
                     {% endfor %}
                 </div>
-                <legend class="border-bottom mb-2 h4" style="margin-top: 5px">Inactive Students</legend>
+                <h4 class="border-bottom mb-2 h4" style="margin-top: 5px">Inactive Students</h4>
                 <div>
                     {% for username, name in inactive_students %}
                         <a href="{{ url_for('student_manager_selected', student_username=username) }}"
@@ -63,9 +63,9 @@
         {% endif %}
         <div class="collapse multi-collapse{{ show_add_student }}" id="AddStudentButton">
             <div class="card card-body">
+                <h4 class="border-bottom mb-2 h4">Add Student</h4>
                 <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
                     {{ add_student_form.hidden_tag() }}
-                    <legend class="border-bottom mb-2 h4">Add Student</legend>
                     <div class="form-group col-md-4">
                         {{ add_student_form.name.label(class="form-control-label") }}
                         {% if add_student_form.name.errors %}
