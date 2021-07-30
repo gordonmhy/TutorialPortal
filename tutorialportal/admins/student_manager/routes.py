@@ -4,7 +4,7 @@ from flask_login import current_user, login_required
 from tutorialportal import db
 from tutorialportal.admins.student_manager.forms import AddStudentForm, AStudentCredentialsForm, AddAttendanceForm
 from tutorialportal.models import Student, User, Attendance
-from tutorialportal.utils import site
+from tutorialportal.config_test import site
 
 admins_student_manager = Blueprint('admins_student_manager', __name__)
 

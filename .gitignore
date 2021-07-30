@@ -3,3 +3,5 @@ venv/
 data.db
 .DS_Store
 __init__.pyc
+config_test.py
+app_test.py

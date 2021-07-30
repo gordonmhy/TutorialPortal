@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 from tutorialportal.main.forms import LoginForm
 from tutorialportal.models import User
-from tutorialportal.utils import site
+from tutorialportal.config_test import site
 from tutorialportal import bcrypt
 
 import random

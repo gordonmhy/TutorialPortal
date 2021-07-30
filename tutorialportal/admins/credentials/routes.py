@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template
 from flask_login import login_required
 
-from tutorialportal.utils import site
+from tutorialportal.config_test import site
 
 admins_credentials = Blueprint('admins_credentials', __name__)
 
