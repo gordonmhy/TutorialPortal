@@ -216,10 +216,13 @@ def remove_student(student_username):
         abort(403)
     student = Student.query.get(student_username)
     user = User.query.get(student_username)
+    attendance = Attendance.query.filter_by(username=student_username)
     if student:
         name = student.name
         db.session.delete(student)
         db.session.delete(user)
+        for record in attendance:
+            db.session.delete(record)
         db.session.commit()
         flash('Student {} deleted.'.format(name), 'success')
         return redirect(url_for('student_manager'))
