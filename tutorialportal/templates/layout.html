@@ -17,7 +17,7 @@
 <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-light" style="background-color: #fbefeb; padding-inline: 1.7%">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('home') }}">Welcome to {{ site.get('name') }}</a>
+            <a class="navbar-brand" href="{{ url_for('main.home') }}">Welcome to {{ site.get('name') }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText"
                     aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -26,7 +26,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     {% if current_user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('home') }}">Home</a>
+                            <a class="nav-link" href="{{ url_for('main.home') }}">Home</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button"
@@ -39,9 +39,9 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 {% if current_user.admin %}
-                                    <li><a class="dropdown-item" href="{{ url_for('student_manager') }}">Student Manager</a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('admin_manager') }}">Admin Manager</a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('insights') }}">Insights</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('admins_student_manager.student_manager') }}">Student Manager</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('admins_admin_manager.admin_manager') }}">Admin Manager</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('admins_insights.insights') }}">Insights</a></li>
                                 {% else %}
                                     <li><a class="dropdown-item" href="#">Attendance Record</a></li>
                                     <li><a class="dropdown-item" href="#">Payment Record</a></li>
@@ -49,7 +49,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                            <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
                         </li>
                     {% endif %}
                 </ul>

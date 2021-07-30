@@ -1,14 +1,9 @@
-import datetime
-import re
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, FloatField, TextAreaField, DateField
+from wtforms import DateField, StringField, FloatField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, Length, ValidationError
 
-
-class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired()])
-    submit = SubmitField('Log in')
+import datetime
+import re
 
 
 class AddStudentForm(FlaskForm):

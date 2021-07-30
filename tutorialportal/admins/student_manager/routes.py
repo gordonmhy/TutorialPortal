@@ -1,41 +1,16 @@
-import datetime
-import random
-from flask import render_template, redirect, url_for, flash, request, abort
-from tutorialportal import app, db, bcrypt
+from flask import Blueprint, abort, flash, request, redirect, render_template, url_for
+from flask_login import current_user, login_required
+
+from tutorialportal import db
+from tutorialportal.admins.student_manager.forms import AddStudentForm, AStudentCredentialsForm, AddAttendanceForm
+from tutorialportal.models import Student, User, Attendance
 from tutorialportal.utils import site
-from tutorialportal.forms import LoginForm, AddStudentForm, AStudentCredentialsForm, AddAttendanceForm
-from tutorialportal.models import User, Admin, Student, Attendance, FeeSubmission
-from flask_login import login_user, current_user, logout_user, login_required
+
+admins_student_manager = Blueprint('admins_student_manager', __name__)
 
 
-@app.route('/login', methods=['POST', 'GET'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
-        user_not_found = False
-        dummy = bcrypt.generate_password_hash(form.password.data + str(random.random())).decode('utf-8')
-        if user is None:
-            user_not_found = True
-        if bcrypt.check_password_hash(user.password if not user_not_found else dummy, form.password.data):
-            login_user(user)
-            next_page = request.args.get('next')
-            return redirect(next_page if next_page else url_for('home'))
-        flash('* Incorrect username or password', 'danger')
-    return render_template('login.html', page_name='Login', form=form, site=site)
-
-
-@app.route('/logout')
-def logout():
-    logout_user()
-    flash('* You have been logged out.', 'success')
-    return redirect(url_for('login'))
-
-
-@app.route('/manager/student', methods=['POST', 'GET'])
-@app.route('/manager/student_<string:page>', methods=['POST', 'GET'])
+@admins_student_manager.route('/manager/student', methods=['POST', 'GET'])
+@admins_student_manager.route('/manager/student_<string:page>', methods=['POST', 'GET'])
 @login_required
 def student_manager(page=None):
     if current_user.admin is False:
@@ -69,7 +44,7 @@ def student_manager(page=None):
             db.session.add(student)
             db.session.commit()
             flash('Student added.\nUsername: {}\nPassword: {}'.format(username, password), 'success')
-            return redirect(url_for('student_manager', student_username=username))
+            return redirect(url_for('admins_student_manager.student_manager', student_username=username))
         if page is None:
             panel_active['add_student'] = True
     return render_template('student_manager.html', page_name='Student Manager', add_student_form=add_student_form,
@@ -77,8 +52,8 @@ def student_manager(page=None):
                            inactive_students=inactive_students)
 
 
-@app.route('/manager/student/<string:student_username>', methods=['POST', 'GET'])
-@app.route('/manager/student/<string:student_username>/<string:page>', methods=['POST', 'GET'])
+@admins_student_manager.route('/manager/student/<string:student_username>', methods=['POST', 'GET'])
+@admins_student_manager.route('/manager/student/<string:student_username>/<string:page>', methods=['POST', 'GET'])
 @login_required
 def student_manager_selected(student_username, page=None):
     if current_user.admin is False:
@@ -152,36 +127,7 @@ def student_manager_selected(student_username, page=None):
                            add_attendance_form=add_attendance_form, student_attendance=student_attendance)
 
 
-@app.route('/manager/admin')
-@login_required
-def admin_manager():
-    if current_user.admin is False:
-        return 'access denied'
-    return 'Page under construction'
-
-
-@app.route('/insights')
-@login_required
-def insights():
-    if current_user.admin is False:
-        return 'access denied'
-    return 'Page under construction'
-
-
-@app.route('/')
-@app.route('/home')
-@login_required
-def home():
-    return render_template('home.html', page_name='Home', site=site)
-
-
-@app.route('/credentials')
-@login_required
-def credentials():
-    return render_template('credentials.html', page_name='Credentials', site=site)
-
-
-@app.route('/make_inactive/<string:student_username>')
+@admins_student_manager.route('/make_inactive/<string:student_username>')
 @login_required
 def make_inactive(student_username):
     if current_user.admin is False:
@@ -191,11 +137,11 @@ def make_inactive(student_username):
         student.active = False
         db.session.commit()
         flash('Student {} has been made inactive.'.format(student.name), 'success')
-        return redirect(url_for('student_manager_selected', student_username=student_username, page='credentials'))
+        return redirect(url_for('admins_student_manager.student_manager_selected', student_username=student_username, page='credentials'))
     abort(403)
 
 
-@app.route('/make_active/<string:student_username>')
+@admins_student_manager.route('/make_active/<string:student_username>')
 @login_required
 def make_active(student_username):
     if current_user.admin is False:
@@ -205,11 +151,11 @@ def make_active(student_username):
         student.active = True
         db.session.commit()
         flash('Student {} has been made active.'.format(student.name), 'success')
-        return redirect(url_for('student_manager_selected', student_username=student_username, page='credentials'))
+        return redirect(url_for('admins_student_manager.student_manager_selected', student_username=student_username, page='credentials'))
     abort(403)
 
 
-@app.route('/remove/student/<string:student_username>', methods=['POST'])
+@admins_student_manager.route('/remove/student/<string:student_username>', methods=['POST'])
 @login_required
 def remove_student(student_username):
     if current_user.admin is False:
@@ -225,5 +171,5 @@ def remove_student(student_username):
             db.session.delete(record)
         db.session.commit()
         flash('Student {} deleted.'.format(name), 'success')
-        return redirect(url_for('student_manager'))
+        return redirect(url_for('admins_student_manager.student_manager'))
     abort(403)
