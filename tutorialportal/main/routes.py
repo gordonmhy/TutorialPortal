@@ -27,7 +27,7 @@ def login():
             next_page = request.args.get('next')
             return redirect(next_page if next_page else url_for('main.home'))
         flash('* Incorrect username or password', 'danger')
-    return render_template('login.html', page_name='Login', form=form, site=site)
+    return render_template('general/login.html', page_name='Login', form=form, site=site)
 
 
 @main.route('/logout')
@@ -41,4 +41,4 @@ def logout():
 @main.route('/home')
 @login_required
 def home():
-    return render_template('home.html', page_name='Home', site=site)
+    return render_template('general/home.html', page_name='Home', site=site)

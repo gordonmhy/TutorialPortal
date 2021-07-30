@@ -9,6 +9,6 @@ admins_credentials = Blueprint('admins_credentials', __name__)
 @admins_credentials.route('/credentials')
 @login_required
 def credentials():
-    return render_template('admins/../../templates/credentials.html', page_name='Credentials', site=site)
+    return render_template('admins/credentials.html', page_name='Credentials', site=site)
 
 

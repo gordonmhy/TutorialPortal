@@ -47,7 +47,7 @@ def student_manager(page=None):
             return redirect(url_for('admins_student_manager.student_manager', student_username=username))
         if page is None:
             panel_active['add_student'] = True
-    return render_template('student_manager.html', page_name='Student Manager', add_student_form=add_student_form,
+    return render_template('admins/student_manager.html', page_name='Student Manager', add_student_form=add_student_form,
                            site=site, panel_active=panel_active, active_students=active_students,
                            inactive_students=inactive_students)
 
@@ -121,7 +121,7 @@ def student_manager_selected(student_username, page=None):
     attendance_page = request.args.get('p', 1, type=int)
     student_attendance = Attendance.query.filter_by(username=student.username).order_by(
         Attendance.lesson_date.desc()).paginate(page=attendance_page, per_page=7)
-    return render_template('student_manager_selected.html', page_name='Student Manager', site=site,
+    return render_template('admins/student_manager_selected.html', page_name='Student Manager', site=site,
                            panel_active=panel_active, student=student,
                            a_student_credentials_form=a_student_credentials_form,
                            add_attendance_form=add_attendance_form, student_attendance=student_attendance)
