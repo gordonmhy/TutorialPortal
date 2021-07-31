@@ -34,15 +34,11 @@
                                 Panels
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                                <li><a class="dropdown-item" href="#">Credentials</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
                                 {% if current_user.admin %}
+                                    <li><a class="dropdown-item" href="#">Information and Controls</a></li>
                                     <li><a class="dropdown-item" href="{{ url_for('admins_student_manager.student_manager') }}">Student Manager</a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('admins_admin_manager.admin_manager') }}">Admin Manager</a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('admins_insights.insights') }}">Insights</a></li>
                                 {% else %}
+                                    <li><a class="dropdown-item" href="#">Credentials</a></li>
                                     <li><a class="dropdown-item" href="#">Attendance Record</a></li>
                                     <li><a class="dropdown-item" href="#">Payment Record</a></li>
                                 {% endif %}

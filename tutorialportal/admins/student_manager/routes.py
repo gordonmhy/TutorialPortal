@@ -61,7 +61,7 @@ def student_manager_selected(student_username, page=None):
     # Credentials Form, Add Attendance Form,
     # Add Payment Form, Attendance Table with controls, Payment History with controls
     panel_active = {
-        'credentials': False,
+        'info': False,
         'attendance': False,
         'payment': False
     }
@@ -86,7 +86,7 @@ def student_manager_selected(student_username, page=None):
             db.session.commit()
             flash('Credentials updated for {}.'.format(student.name), 'success')
         if page is None:
-            panel_active['credentials'] = True
+            panel_active['info'] = True
     elif add_attendance_form.add_attendance_submit.data:
         if add_attendance_form.validate_on_submit():
             # Possibly add a check in timeslot overlapping
@@ -137,7 +137,7 @@ def make_inactive(student_username):
         student.active = False
         db.session.commit()
         flash('Student {} has been made inactive.'.format(student.name), 'success')
-        return redirect(url_for('admins_student_manager.student_manager_selected', student_username=student_username, page='credentials'))
+        return redirect(url_for('admins_student_manager.student_manager_selected', student_username=student_username, page='info'))
     abort(403)
 
 
@@ -151,7 +151,7 @@ def make_active(student_username):
         student.active = True
         db.session.commit()
         flash('Student {} has been made active.'.format(student.name), 'success')
-        return redirect(url_for('admins_student_manager.student_manager_selected', student_username=student_username, page='credentials'))
+        return redirect(url_for('admins_student_manager.student_manager_selected', student_username=student_username, page='info'))
     abort(403)
 
 
