@@ -19,9 +19,9 @@ def student_manager(page=None):
     if current_user.tutor is False:
         abort(403)
     active_students = [(student_record.username, student_record.name) for student_record in
-                       Student.query.all() if student_record.active]
+                       Student.query.filter_by(tutor_username=current_user.username) if student_record.active]
     inactive_students = [(student_record.username, student_record.name) for student_record in
-                         Student.query.all() if not student_record.active]
+                         Student.query.filter_by(tutor_username=current_user.username) if not student_record.active]
     add_student_form = AddStudentForm()
     panel_active = {
         'add_student': False,
@@ -74,6 +74,8 @@ def student_manager_selected(student_username, page=None):
     if request.method == 'GET' and page is None:
         panel_active['attendance'] = True
     student = Student.query.filter_by(username=student_username).first_or_404()
+    if student.tutor_username is not current_user.username:
+        abort(401)
     student_credentials_form = StudentCredentialsForm()
     add_attendance_form = AddAttendanceForm()
     if student_credentials_form.student_credentials_submit.data:
@@ -137,12 +139,15 @@ def make_inactive(student_username):
     if current_user.tutor is False:
         abort(403)
     student = Student.query.get(student_username)
+    if student.tutor_username is not current_user.username:
+        abort(401)
     if student:
         student.active = False
         db.session.commit()
         flash('Student {} has been made inactive.'.format(student.name), 'success')
         return redirect(
-            url_for('tutors_student_manager.student_manager_selected', student_username=student_username, page='credentials'))
+            url_for('tutors_student_manager.student_manager_selected', student_username=student_username,
+                    page='credentials'))
     abort(403)
 
 
@@ -152,12 +157,15 @@ def make_active(student_username):
     if current_user.tutor is False:
         abort(403)
     student = Student.query.get(student_username)
+    if student.tutor_username is not current_user.username:
+        abort(401)
     if student:
         student.active = True
         db.session.commit()
         flash('Student {} has been made active.'.format(student.name), 'success')
         return redirect(
-            url_for('tutors_student_manager.student_manager_selected', student_username=student_username, page='credentials'))
+            url_for('tutors_student_manager.student_manager_selected', student_username=student_username,
+                    page='credentials'))
     abort(403)
 
 
@@ -170,6 +178,8 @@ def remove_student(student_username):
     user = User.query.get(student_username)
     attendance = Attendance.query.filter_by(username=student_username)
     if student:
+        if student.tutor_username is not current_user.username:
+            abort(401)
         name = student.name
         db.session.delete(student)
         db.session.delete(user)
