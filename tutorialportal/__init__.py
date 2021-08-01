@@ -19,11 +19,11 @@ def create_app(config):
     login_manager.init_app(app)
 
     from tutorialportal.main.routes import main
-    from tutorialportal.tutors.info.routes import admins_info
-    from tutorialportal.tutors.student_manager.routes import admins_student_manager
+    from tutorialportal.tutors.info.routes import tutors_info
+    from tutorialportal.tutors.student_manager.routes import tutors_student_manager
 
     app.register_blueprint(main)
-    app.register_blueprint(admins_info)
-    app.register_blueprint(admins_student_manager)
+    app.register_blueprint(tutors_info)
+    app.register_blueprint(tutors_student_manager)
 
     return app

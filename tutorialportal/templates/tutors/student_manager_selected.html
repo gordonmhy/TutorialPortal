@@ -160,17 +160,17 @@
                     </div>
                     <div class="form-group" style="padding-top: 5px">
                         {{ student_credentials_form.student_credentials_submit(class="btn btn-dark") }}
-                        <a href="{{ url_for('admins_student_manager.student_manager_selected', student_username=student.username, page='credentials') }}"
+                        <a href="{{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, page='credentials') }}"
                            class="btn btn-outline-secondary" style="margin-left: 5px">Discard Unsaved Changes</a>
                     </div>
                 </form>
                 <div class="d-flex flex-wrap">
                     {% if student.active %}
-                        <a href="{{ url_for('admins_student_manager.make_inactive', student_username=student.username) }}"
+                        <a href="{{ url_for('tutors_student_manager.make_inactive', student_username=student.username) }}"
                            class="btn btn-outline-danger flex-fill col-md-4"
                            style="margin-top: 15px; margin-right: 5px">Make Inactive</a>
                     {% else %}
-                        <a href="{{ url_for('admins_student_manager.make_active', student_username=student.username) }}"
+                        <a href="{{ url_for('tutors_student_manager.make_active', student_username=student.username) }}"
                            class="btn btn-outline-success flex-fill col-md-4"
                            style="margin-top: 15px; margin-right: 5px">Make Active</a>
                     {% endif %}
@@ -218,11 +218,11 @@
                         {% if page_number %}
                             {% if student_attendance.page == page_number %}
                                 <a class="btn btn-dark col-1" href="
-        {{ url_for('admins_student_manager.student_manager_selected', student_username=student.username, p=page_number, page='attendance') }}">
+        {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, p=page_number, page='attendance') }}">
                                     {{ page_number }}</a>
                             {% else %}
                                 <a class="btn btn-outline-dark col-1" href="
-        {{ url_for('admins_student_manager.student_manager_selected', student_username=student.username, p=page_number, page='attendance') }}">
+        {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, p=page_number, page='attendance') }}">
                                     {{ page_number }}</a>
                             {% endif %}
                         {% else %}
@@ -305,7 +305,7 @@
                     <div class="form-group" style="padding-top: 5px">
                         {{ add_attendance_form.add_attendance_submit(class="btn btn-dark") }}
                         <a class="btn btn-outline-secondary" style="margin-left: 3px"
-                           href="{{ url_for('admins_student_manager.student_manager_selected', student_username=student.username, page='attendance') }}">Discard
+                           href="{{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, page='attendance') }}">Discard
                             Unsaved Input</a>
                     </div>
                 </form>
@@ -313,7 +313,7 @@
         </div>
         <!-- BACK BUTTON -->
         <div class="container d-flex flex-wrap">
-            <a href="{{ url_for('admins_student_manager.student_manager') }}" class="btn btn-light flex-fill" role="button"
+            <a href="{{ url_for('tutors_student_manager.student_manager') }}" class="btn btn-light flex-fill" role="button"
                aria-disabled="true"
                style="margin-top: 10px; margin-bottom: 10px">
                 Back
@@ -333,7 +333,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Regret</button>
-                    <form method="POST" action="{{ url_for('admins_student_manager.remove_student', student_username=student.username) }}">
+                    <form method="POST" action="{{ url_for('tutors_student_manager.remove_student', student_username=student.username) }}">
                         <input type="submit" class="btn btn-danger" value="Remove Anyway">
                     </form>
                 </div>

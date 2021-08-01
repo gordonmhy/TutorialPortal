@@ -35,8 +35,8 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                                 {% if current_user.tutor %}
-                                    <li><a class="dropdown-item" href="#">Information and Controls</a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('admins_student_manager.student_manager') }}">Student Manager</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('tutors_info.info') }}">Information and Controls</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('tutors_student_manager.student_manager') }}">Student Manager</a></li>
                                 {% else %}
                                     <li><a class="dropdown-item" href="#">Credentials</a></li>
                                     <li><a class="dropdown-item" href="#">Attendance Record</a></li>

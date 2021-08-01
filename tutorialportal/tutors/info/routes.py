@@ -3,10 +3,10 @@ from flask_login import login_required
 
 from tutorialportal.config_test import site
 
-admins_info = Blueprint('admins_info', __name__)
+tutors_info = Blueprint('tutors_info', __name__)
 
 
-@admins_info.route('/info')
+@tutors_info.route('/info')
 @login_required
 def info():
     return render_template('tutors/info.html', page_name='Information', site=site)
