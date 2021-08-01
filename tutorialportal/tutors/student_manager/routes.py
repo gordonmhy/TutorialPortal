@@ -34,6 +34,8 @@ def student_manager(page=None):
     if add_student_form.add_student_submit.data:
         if add_student_form.validate_on_submit():
             username = add_student_form.name.data.split(" ")[0].lower() + datetime.datetime.now().strftime('%S%M%H')
+            while User.query.get(username) is not None:
+                username = add_student_form.name.data.split(" ")[0].lower() + datetime.datetime.now().strftime('%S%M%H')
             password = add_student_form.name.data.replace(" ", "") + str(random.randint(10, 100))
             user = User(username=username, password=bcrypt.generate_password_hash(password).decode('utf-8'),
                         tutor=False)
@@ -74,7 +76,7 @@ def student_manager_selected(student_username, page=None):
     if request.method == 'GET' and page is None:
         panel_active['attendance'] = True
     student = Student.query.filter_by(username=student_username).first_or_404()
-    if student.tutor_username is not current_user.username:
+    if student.tutor_username != current_user.username:
         abort(401)
     student_credentials_form = StudentCredentialsForm()
     add_attendance_form = AddAttendanceForm()
@@ -139,7 +141,7 @@ def make_inactive(student_username):
     if current_user.tutor is False:
         abort(403)
     student = Student.query.get(student_username)
-    if student.tutor_username is not current_user.username:
+    if student.tutor_username != current_user.username:
         abort(401)
     if student:
         student.active = False
@@ -157,7 +159,7 @@ def make_active(student_username):
     if current_user.tutor is False:
         abort(403)
     student = Student.query.get(student_username)
-    if student.tutor_username is not current_user.username:
+    if student.tutor_username != current_user.username:
         abort(401)
     if student:
         student.active = True
@@ -178,7 +180,7 @@ def remove_student(student_username):
     user = User.query.get(student_username)
     attendance = Attendance.query.filter_by(username=student_username)
     if student:
-        if student.tutor_username is not current_user.username:
+        if student.tutor_username != current_user.username:
             abort(401)
         name = student.name
         db.session.delete(student)
