@@ -18,5 +18,4 @@ A simple portal written on top of the Python [Flask](https://flask.palletsprojec
 
 ### Plan
 * Complete implementation for personal use
-* Tweak application such that it becomes easily deployable to everyone
-* Include thorough documentations to guide app usage
+* Deploy application such that tutors can register on the platform
