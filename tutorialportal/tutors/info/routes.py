@@ -9,6 +9,6 @@ admins_info = Blueprint('admins_info', __name__)
 @admins_info.route('/info')
 @login_required
 def info():
-    return render_template('admins/info.html', page_name='Information', site=site)
+    return render_template('tutors/info.html', page_name='Information', site=site)
 
 

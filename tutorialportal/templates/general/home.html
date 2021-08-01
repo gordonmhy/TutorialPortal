@@ -2,7 +2,7 @@
 {% block content %}
     <div class="container d-flex flex-wrap">
         <!-- TODO: Design change & description rewrite ~ Boostrap Jumbotron -->
-        {% if current_user.admin %}
+        {% if current_user.tutor %}
             {% for p_name, p_des, p_link in site.get('a_panels') %}
                 <div class="card col-md-4 flex-fill" style="margin: 5px">
                     <div class="card-body">

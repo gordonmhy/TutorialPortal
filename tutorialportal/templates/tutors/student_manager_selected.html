@@ -40,126 +40,126 @@
             <div class="card card-body">
                 <h4 class="border-bottom mb-2 h4">Credentials</h4>
                 <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
-                    {{ a_student_credentials_form.hidden_tag() }}
+                    {{ student_credentials_form.hidden_tag() }}
                     <div class="form-group col-md-4">
-                        {{ a_student_credentials_form.name.label(class="form-control-label") }}
-                        {% if a_student_credentials_form.name.errors %}
-                            {{ a_student_credentials_form.name(class="form-control form-control-lg is-invalid") }}
+                        {{ student_credentials_form.name.label(class="form-control-label") }}
+                        {% if student_credentials_form.name.errors %}
+                            {{ student_credentials_form.name(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in a_student_credentials_form.name.errors %}
+                                {% for error in student_credentials_form.name.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ a_student_credentials_form.name(class="form-control form-control-lg") }}
+                            {{ student_credentials_form.name(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
                     <div class="form-group col-md-4">
-                        {{ a_student_credentials_form.s_phone.label(class="form-control-label") }}
-                        {% if a_student_credentials_form.s_phone.errors %}
-                            {{ a_student_credentials_form.s_phone(class="form-control form-control-lg is-invalid") }}
+                        {{ student_credentials_form.s_phone.label(class="form-control-label") }}
+                        {% if student_credentials_form.s_phone.errors %}
+                            {{ student_credentials_form.s_phone(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in a_student_credentials_form.s_phone.errors %}
+                                {% for error in student_credentials_form.s_phone.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ a_student_credentials_form.s_phone(class="form-control form-control-lg") }}
+                            {{ student_credentials_form.s_phone(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
                     <div class="form-group col-md-4">
-                        {{ a_student_credentials_form.p_phone.label(class="form-control-label") }}
-                        {% if a_student_credentials_form.p_phone.errors %}
-                            {{ a_student_credentials_form.p_phone(class="form-control form-control-lg is-invalid") }}
+                        {{ student_credentials_form.p_phone.label(class="form-control-label") }}
+                        {% if student_credentials_form.p_phone.errors %}
+                            {{ student_credentials_form.p_phone(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in a_student_credentials_form.p_phone.errors %}
+                                {% for error in student_credentials_form.p_phone.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ a_student_credentials_form.p_phone(class="form-control form-control-lg") }}
+                            {{ student_credentials_form.p_phone(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
                     <div class="form-group col-md-4">
-                        {{ a_student_credentials_form.p_rel.label(class="form-control-label") }}
-                        {% if a_student_credentials_form.p_rel.errors %}
-                            {{ a_student_credentials_form.p_rel(class="form-control form-control-lg is-invalid") }}
+                        {{ student_credentials_form.p_rel.label(class="form-control-label") }}
+                        {% if student_credentials_form.p_rel.errors %}
+                            {{ student_credentials_form.p_rel(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in a_student_credentials_form.p_rel.errors %}
+                                {% for error in student_credentials_form.p_rel.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ a_student_credentials_form.p_rel(class="form-control form-control-lg") }}
+                            {{ student_credentials_form.p_rel(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
                     <div class="form-group col-md-4">
-                        {{ a_student_credentials_form.lesson_day.label(class="form-control-label") }}
-                        {% if a_student_credentials_form.lesson_day.errors %}
-                            {{ a_student_credentials_form.lesson_day(class="form-control form-control-lg is-invalid") }}
+                        {{ student_credentials_form.lesson_day.label(class="form-control-label") }}
+                        {% if student_credentials_form.lesson_day.errors %}
+                            {{ student_credentials_form.lesson_day(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in a_student_credentials_form.lesson_day.errors %}
+                                {% for error in student_credentials_form.lesson_day.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ a_student_credentials_form.lesson_day(class="form-control form-control-lg") }}
+                            {{ student_credentials_form.lesson_day(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
                     <div class="form-group col-md-4">
-                        {{ a_student_credentials_form.lesson_time.label(class="form-control-label") }}
-                        {% if a_student_credentials_form.lesson_time.errors %}
-                            {{ a_student_credentials_form.lesson_time(class="form-control form-control-lg is-invalid") }}
+                        {{ student_credentials_form.lesson_time.label(class="form-control-label") }}
+                        {% if student_credentials_form.lesson_time.errors %}
+                            {{ student_credentials_form.lesson_time(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in a_student_credentials_form.lesson_time.errors %}
+                                {% for error in student_credentials_form.lesson_time.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ a_student_credentials_form.lesson_time(class="form-control form-control-lg") }}
+                            {{ student_credentials_form.lesson_time(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
                     <div class="form-group col-md-4">
-                        {{ a_student_credentials_form.lesson_duration.label(class="form-control-label") }}
-                        {% if a_student_credentials_form.lesson_duration.errors %}
-                            {{ a_student_credentials_form.lesson_duration(class="form-control form-control-lg is-invalid") }}
+                        {{ student_credentials_form.lesson_duration.label(class="form-control-label") }}
+                        {% if student_credentials_form.lesson_duration.errors %}
+                            {{ student_credentials_form.lesson_duration(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in a_student_credentials_form.lesson_duration.errors %}
+                                {% for error in student_credentials_form.lesson_duration.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ a_student_credentials_form.lesson_duration(class="form-control form-control-lg") }}
+                            {{ student_credentials_form.lesson_duration(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
                     <div class="form-group col-md-4">
-                        {{ a_student_credentials_form.lesson_fee.label(class="form-control-label") }}
-                        {% if a_student_credentials_form.lesson_fee.errors %}
-                            {{ a_student_credentials_form.lesson_fee(class="form-control form-control-lg is-invalid") }}
+                        {{ student_credentials_form.lesson_fee.label(class="form-control-label") }}
+                        {% if student_credentials_form.lesson_fee.errors %}
+                            {{ student_credentials_form.lesson_fee(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in a_student_credentials_form.lesson_fee.errors %}
+                                {% for error in student_credentials_form.lesson_fee.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ a_student_credentials_form.lesson_fee(class="form-control form-control-lg") }}
+                            {{ student_credentials_form.lesson_fee(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
                     <div class="form-group col-md-4">
-                        {{ a_student_credentials_form.remarks.label(class="form-control-label") }}
-                        {% if a_student_credentials_form.remarks.errors %}
-                            {{ a_student_credentials_form.remarks(class="form-control form-control-lg is-invalid") }}
+                        {{ student_credentials_form.remarks.label(class="form-control-label") }}
+                        {% if student_credentials_form.remarks.errors %}
+                            {{ student_credentials_form.remarks(class="form-control form-control-lg is-invalid") }}
                             <div class="invalid-feedback">
-                                {% for error in a_student_credentials_form.remarks.errors %}
+                                {% for error in student_credentials_form.remarks.errors %}
                                     <span>{{ error }}</span>
                                 {% endfor %}
                             </div>
                         {% else %}
-                            {{ a_student_credentials_form.remarks(class="form-control form-control-lg") }}
+                            {{ student_credentials_form.remarks(class="form-control form-control-lg") }}
                         {% endif %}
                     </div>
                     <div class="form-group" style="padding-top: 5px">
-                        {{ a_student_credentials_form.a_student_credentials_submit(class="btn btn-dark") }}
+                        {{ student_credentials_form.student_credentials_submit(class="btn btn-dark") }}
                         <a href="{{ url_for('admins_student_manager.student_manager_selected', student_username=student.username, page='credentials') }}"
                            class="btn btn-outline-secondary" style="margin-left: 5px">Discard Unsaved Changes</a>
                     </div>

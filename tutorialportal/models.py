@@ -12,22 +12,23 @@ def load_user(username):
 class User(db.Model, UserMixin):
     username = db.Column(db.String(25), primary_key=True)
     password = db.Column(db.String(60), nullable=False)
-    admin = db.Column(db.Boolean, nullable=False)
+    tutor = db.Column(db.Boolean, nullable=False)
 
     def __repr__(self):
-        return 'User({}, {})'.format(self.username, self.admin)
+        return 'User({}, {})'.format(self.username, self.tutor)
 
     def get_id(self):
         return self.username
 
 
-class Admin(db.Model):
+class Tutor(db.Model):
     username = db.Column(db.String(25), db.ForeignKey('user.username'), primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
     remark = db.Column(db.Text)
 
     def __repr__(self):
-        return 'Admin({}, {})'.format(self.username, self.name)
+        return 'Tutor({}, {})'.format(self.username, self.name)
 
 
 class Student(db.Model):
@@ -41,6 +42,7 @@ class Student(db.Model):
     lesson_duration = db.Column(db.String(5), nullable=False)
     lesson_fee = db.Column(db.Float, nullable=False)
     active = db.Column(db.Boolean, nullable=False, default=True)
+    tutor_username = db.Column(db.String(25), db.ForeignKey('user.username'))
     remark = db.Column(db.Text)
 
     def __repr__(self):

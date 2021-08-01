@@ -39,7 +39,7 @@ class AddStudentForm(FlaskForm):
             raise ValidationError('Field must be an 8-digit HK phone number.')
 
 
-class AStudentCredentialsForm(FlaskForm):
+class StudentCredentialsForm(FlaskForm):
     name = StringField('Student Name', validators=[DataRequired(), Length(max=50)])
     s_phone = StringField('Student\'s phone')
     p_phone = StringField('Parent\'s phone')
@@ -49,7 +49,7 @@ class AStudentCredentialsForm(FlaskForm):
     lesson_duration = FloatField('Duration of lessons (hours)', validators=[DataRequired()])
     lesson_fee = FloatField('Charge per lesson', validators=[DataRequired()])
     remarks = TextAreaField('Remarks', render_kw={"rows": 1})
-    a_student_credentials_submit = SubmitField('Save Changes')
+    student_credentials_submit = SubmitField('Save Changes')
 
     def validate_name(self, name):
         if not re.search('[\w]+[ ][\w]+[\w ]*', name.data):

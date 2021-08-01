@@ -34,7 +34,7 @@
                                 Panels
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
-                                {% if current_user.admin %}
+                                {% if current_user.tutor %}
                                     <li><a class="dropdown-item" href="#">Information and Controls</a></li>
                                     <li><a class="dropdown-item" href="{{ url_for('admins_student_manager.student_manager') }}">Student Manager</a></li>
                                 {% else %}

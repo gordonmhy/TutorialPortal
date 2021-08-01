@@ -2,7 +2,7 @@ from flask import Blueprint, abort, flash, request, redirect, render_template, u
 from flask_login import current_user, login_required
 
 from tutorialportal import db
-from tutorialportal.admins.student_manager.forms import AddStudentForm, AStudentCredentialsForm, AddAttendanceForm
+from tutorialportal.tutors.student_manager.forms import AddStudentForm, StudentCredentialsForm, AddAttendanceForm
 from tutorialportal.models import Student, User, Attendance
 from tutorialportal.config_test import site
 
@@ -13,7 +13,7 @@ admins_student_manager = Blueprint('admins_student_manager', __name__)
 @admins_student_manager.route('/manager/student_<string:page>', methods=['POST', 'GET'])
 @login_required
 def student_manager(page=None):
-    if current_user.admin is False:
+    if current_user.tutor is False:
         abort(403)
     active_students = [(student_record.username, student_record.name) for student_record in
                        Student.query.all() if student_record.active]
@@ -40,14 +40,14 @@ def student_manager(page=None):
                               lesson_day=add_student_form.lesson_day.data, lesson_time=add_student_form.lesson_time.data
                               , lesson_duration=add_student_form.lesson_duration.data,
                               lesson_fee=add_student_form.lesson_fee.data, remark=add_student_form.remarks.data,
-                              active=True)
+                              tutor_username=current_user.username, active=True)
             db.session.add(student)
             db.session.commit()
             flash('Student added.\nUsername: {}\nPassword: {}'.format(username, password), 'success')
             return redirect(url_for('admins_student_manager.student_manager', student_username=username))
         if page is None:
             panel_active['add_student'] = True
-    return render_template('admins/student_manager.html', page_name='Student Manager', add_student_form=add_student_form,
+    return render_template('tutors/student_manager.html', page_name='Student Manager', add_student_form=add_student_form,
                            site=site, panel_active=panel_active, active_students=active_students,
                            inactive_students=inactive_students)
 
@@ -56,7 +56,7 @@ def student_manager(page=None):
 @admins_student_manager.route('/manager/student/<string:student_username>/<string:page>', methods=['POST', 'GET'])
 @login_required
 def student_manager_selected(student_username, page=None):
-    if current_user.admin is False:
+    if current_user.tutor is False:
         abort(403)
     # Credentials Form, Add Attendance Form,
     # Add Payment Form, Attendance Table with controls, Payment History with controls
@@ -70,19 +70,19 @@ def student_manager_selected(student_username, page=None):
     if request.method == 'GET' and page is None:
         panel_active['attendance'] = True
     student = Student.query.filter_by(username=student_username).first_or_404()
-    a_student_credentials_form = AStudentCredentialsForm()
+    student_credentials_form = StudentCredentialsForm()
     add_attendance_form = AddAttendanceForm()
-    if a_student_credentials_form.a_student_credentials_submit.data:
-        if a_student_credentials_form.validate_on_submit():
-            student.name = a_student_credentials_form.name.data
-            student.s_phone = a_student_credentials_form.s_phone.data
-            student.p_phone = a_student_credentials_form.p_phone.data
-            student.p_rel = a_student_credentials_form.p_rel.data
-            student.lesson_day = a_student_credentials_form.lesson_day.data
-            student.lesson_time = a_student_credentials_form.lesson_time.data
-            student.lesson_duration = a_student_credentials_form.lesson_duration.data
-            student.lesson_fee = a_student_credentials_form.lesson_fee.data
-            student.remark = a_student_credentials_form.remarks.data
+    if student_credentials_form.student_credentials_submit.data:
+        if student_credentials_form.validate_on_submit():
+            student.name = student_credentials_form.name.data
+            student.s_phone = student_credentials_form.s_phone.data
+            student.p_phone = student_credentials_form.p_phone.data
+            student.p_rel = student_credentials_form.p_rel.data
+            student.lesson_day = student_credentials_form.lesson_day.data
+            student.lesson_time = student_credentials_form.lesson_time.data
+            student.lesson_duration = student_credentials_form.lesson_duration.data
+            student.lesson_fee = student_credentials_form.lesson_fee.data
+            student.remark = student_credentials_form.remarks.data
             db.session.commit()
             flash('Credentials updated for {}.'.format(student.name), 'success')
         if page is None:
@@ -105,15 +105,15 @@ def student_manager_selected(student_username, page=None):
     else:
         if page is None:
             panel_active['attendance'] = True
-        a_student_credentials_form.name.data = student.name
-        a_student_credentials_form.s_phone.data = student.s_phone
-        a_student_credentials_form.p_phone.data = student.p_phone
-        a_student_credentials_form.p_rel.data = student.p_rel
-        a_student_credentials_form.lesson_day.data = student.lesson_day
-        a_student_credentials_form.lesson_time.data = student.lesson_time
-        a_student_credentials_form.lesson_duration.data = student.lesson_duration
-        a_student_credentials_form.lesson_fee.data = student.lesson_fee
-        a_student_credentials_form.remarks.data = student.remark
+        student_credentials_form.name.data = student.name
+        student_credentials_form.s_phone.data = student.s_phone
+        student_credentials_form.p_phone.data = student.p_phone
+        student_credentials_form.p_rel.data = student.p_rel
+        student_credentials_form.lesson_day.data = student.lesson_day
+        student_credentials_form.lesson_time.data = student.lesson_time
+        student_credentials_form.lesson_duration.data = student.lesson_duration
+        student_credentials_form.lesson_fee.data = student.lesson_fee
+        student_credentials_form.remarks.data = student.remark
         add_attendance_form.lesson_time.data = student.lesson_time
         add_attendance_form.lesson_duration.data = student.lesson_duration
         add_attendance_form.lesson_fee.data = student.lesson_fee
@@ -121,16 +121,16 @@ def student_manager_selected(student_username, page=None):
     attendance_page = request.args.get('p', 1, type=int)
     student_attendance = Attendance.query.filter_by(username=student.username).order_by(
         Attendance.lesson_date.desc()).paginate(page=attendance_page, per_page=7)
-    return render_template('admins/student_manager_selected.html', page_name='Student Manager', site=site,
+    return render_template('tutors/student_manager_selected.html', page_name='Student Manager', site=site,
                            panel_active=panel_active, student=student,
-                           a_student_credentials_form=a_student_credentials_form,
+                           student_credentials_form=student_credentials_form,
                            add_attendance_form=add_attendance_form, student_attendance=student_attendance)
 
 
 @admins_student_manager.route('/make_inactive/<string:student_username>')
 @login_required
 def make_inactive(student_username):
-    if current_user.admin is False:
+    if current_user.tutor is False:
         abort(403)
     student = Student.query.get(student_username)
     if student:
@@ -144,7 +144,7 @@ def make_inactive(student_username):
 @admins_student_manager.route('/make_active/<string:student_username>')
 @login_required
 def make_active(student_username):
-    if current_user.admin is False:
+    if current_user.tutor is False:
         abort(403)
     student = Student.query.get(student_username)
     if student:
@@ -158,7 +158,7 @@ def make_active(student_username):
 @admins_student_manager.route('/remove/student/<string:student_username>', methods=['POST'])
 @login_required
 def remove_student(student_username):
-    if current_user.admin is False:
+    if current_user.tutor is False:
         abort(403)
     student = Student.query.get(student_username)
     user = User.query.get(student_username)
