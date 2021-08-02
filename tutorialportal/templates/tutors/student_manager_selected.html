@@ -15,21 +15,14 @@
         </div>
         <!-- PANEL TOGGLES -->
         <div class="container d-flex flex-wrap">
-            <button class="btn btn-dark flex-fill col-md-3" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#CredentialsButton"
-                    aria-expanded="false" aria-controls="CredentialsButton" style="margin: 3px">
-                Credentials
-            </button>
-            <button class="btn btn-dark flex-fill col-md-3" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#AttendanceButton"
-                    aria-expanded="false" aria-controls="AttendanceButton" style="margin: 3px">
-                Attendance
-            </button>
-            <button class="btn btn-dark flex-fill col-md-3" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#PaymentRecordButton"
-                    aria-expanded="false" aria-controls="PaymentRecordButton" style="margin: 3px">
-                Payment
-            </button>
+            {% set panel_buttons = ["Credentials", "Attendance", "Payment"] %}
+            {% for button in panel_buttons %}
+                <button class="btn btn-dark flex-fill col-md-3" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#{{ button }}Button"
+                        aria-expanded="false" aria-controls="{{ button }}Button" style="margin: 3px">
+                    {{ button }}
+                </button>
+            {% endfor %}
         </div>
         <!-- CREDENTIALS PANEL -->
         {% set show_credentials = '' %}
@@ -41,123 +34,24 @@
                 <h4 class="border-bottom mb-2 h4">Credentials</h4>
                 <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
                     {{ student_credentials_form.hidden_tag() }}
-                    <div class="form-group col-md-4">
-                        {{ student_credentials_form.name.label(class="form-control-label") }}
-                        {% if student_credentials_form.name.errors %}
-                            {{ student_credentials_form.name(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in student_credentials_form.name.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ student_credentials_form.name(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ student_credentials_form.s_phone.label(class="form-control-label") }}
-                        {% if student_credentials_form.s_phone.errors %}
-                            {{ student_credentials_form.s_phone(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in student_credentials_form.s_phone.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ student_credentials_form.s_phone(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ student_credentials_form.p_phone.label(class="form-control-label") }}
-                        {% if student_credentials_form.p_phone.errors %}
-                            {{ student_credentials_form.p_phone(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in student_credentials_form.p_phone.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ student_credentials_form.p_phone(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ student_credentials_form.p_rel.label(class="form-control-label") }}
-                        {% if student_credentials_form.p_rel.errors %}
-                            {{ student_credentials_form.p_rel(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in student_credentials_form.p_rel.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ student_credentials_form.p_rel(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ student_credentials_form.lesson_day.label(class="form-control-label") }}
-                        {% if student_credentials_form.lesson_day.errors %}
-                            {{ student_credentials_form.lesson_day(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in student_credentials_form.lesson_day.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ student_credentials_form.lesson_day(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ student_credentials_form.lesson_time.label(class="form-control-label") }}
-                        {% if student_credentials_form.lesson_time.errors %}
-                            {{ student_credentials_form.lesson_time(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in student_credentials_form.lesson_time.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ student_credentials_form.lesson_time(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ student_credentials_form.lesson_duration.label(class="form-control-label") }}
-                        {% if student_credentials_form.lesson_duration.errors %}
-                            {{ student_credentials_form.lesson_duration(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in student_credentials_form.lesson_duration.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ student_credentials_form.lesson_duration(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ student_credentials_form.lesson_fee.label(class="form-control-label") }}
-                        {% if student_credentials_form.lesson_fee.errors %}
-                            {{ student_credentials_form.lesson_fee(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in student_credentials_form.lesson_fee.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ student_credentials_form.lesson_fee(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ student_credentials_form.remarks.label(class="form-control-label") }}
-                        {% if student_credentials_form.remarks.errors %}
-                            {{ student_credentials_form.remarks(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in student_credentials_form.remarks.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ student_credentials_form.remarks(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
+                    {% set form_elements_1 = [student_credentials_form.name, student_credentials_form.s_phone, student_credentials_form.p_phone] %}
+                    {% set form_elements_2 = [student_credentials_form.p_rel, student_credentials_form.lesson_day, student_credentials_form.lesson_time] %}
+                    {% set form_elements_3 = [student_credentials_form.lesson_duration, student_credentials_form.lesson_fee, student_credentials_form.remarks] %}
+                    {% for element in form_elements_1 + form_elements_2 + form_elements_3 %}
+                        <div class="form-group col-md-4">
+                            {{ element.label(class="form-control-label") }}
+                            {% if element.errors %}
+                                {{ element(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in element.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ element(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                     <div class="form-group" style="padding-top: 5px">
                         {{ student_credentials_form.student_credentials_submit(class="btn btn-dark") }}
                         <a href="{{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, page='credentials') }}"
@@ -237,71 +131,23 @@
                 <h4 class="border-bottom mb-2 h4">Add Attendance</h4>
                 <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
                     {{ add_attendance_form.hidden_tag() }}
-                    <div class="form-group col-md-4">
-                        {{ add_attendance_form.lesson_date.label(class="form-control-label") }}
-                        {% if add_attendance_form.lesson_date.errors %}
-                            {{ add_attendance_form.lesson_date(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in add_attendance_form.lesson_date.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ add_attendance_form.lesson_date(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ add_attendance_form.lesson_time.label(class="form-control-label") }}
-                        {% if add_attendance_form.lesson_time.errors %}
-                            {{ add_attendance_form.lesson_time(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in add_attendance_form.lesson_time.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ add_attendance_form.lesson_time(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ add_attendance_form.lesson_duration.label(class="form-control-label") }}
-                        {% if add_attendance_form.lesson_duration.errors %}
-                            {{ add_attendance_form.lesson_duration(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in add_attendance_form.lesson_duration.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ add_attendance_form.lesson_duration(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ add_attendance_form.lesson_fee.label(class="form-control-label") }}
-                        {% if add_attendance_form.lesson_fee.errors %}
-                            {{ add_attendance_form.lesson_fee(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in add_attendance_form.lesson_fee.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ add_attendance_form.lesson_fee(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
-                    <div class="form-group col-md-4">
-                        {{ add_attendance_form.remarks.label(class="form-control-label") }}
-                        {% if add_attendance_form.remarks.errors %}
-                            {{ add_attendance_form.remarks(class="form-control form-control-lg is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for error in add_attendance_form.remarks.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ add_attendance_form.remarks(class="form-control form-control-lg") }}
-                        {% endif %}
-                    </div>
+                    {% set form_elements_1 = [add_attendance_form.lesson_date, add_attendance_form.lesson_time, add_attendance_form.lesson_duration] %}
+                    {% set form_elements_2 = [add_attendance_form.lesson_fee, add_attendance_form.remarks] %}
+                    {% for element in form_elements_1 + form_elements_2 %}
+                        <div class="form-group col-md-4">
+                            {{ element.label(class="form-control-label") }}
+                            {% if element.errors %}
+                                {{ element(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in element.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ element(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                    {% endfor %}
                     <div class="form-group" style="padding-top: 5px">
                         {{ add_attendance_form.add_attendance_submit(class="btn btn-dark") }}
                         <a class="btn btn-outline-secondary" style="margin-left: 3px"
@@ -313,7 +159,8 @@
         </div>
         <!-- BACK BUTTON -->
         <div class="container d-flex flex-wrap">
-            <a href="{{ url_for('tutors_student_manager.student_manager') }}" class="btn btn-light flex-fill" role="button"
+            <a href="{{ url_for('tutors_student_manager.student_manager') }}" class="btn btn-light flex-fill"
+               role="button"
                aria-disabled="true"
                style="margin-top: 10px; margin-bottom: 10px">
                 Back
@@ -333,7 +180,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Regret</button>
-                    <form method="POST" action="{{ url_for('tutors_student_manager.remove_student', student_username=student.username) }}">
+                    <form method="POST"
+                          action="{{ url_for('tutors_student_manager.remove_student', student_username=student.username) }}">
                         <input type="submit" class="btn btn-danger" value="Remove Anyway">
                     </form>
                 </div>
