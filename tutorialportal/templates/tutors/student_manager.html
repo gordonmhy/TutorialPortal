@@ -25,9 +25,9 @@
     <div>
         {% set show_select_student = '' %}
         {% if panel_active.get('select_student') %}
-            {% set show_select_student = ' in show' %}
+            {% set show_select_student = ' show' %}
         {% endif %}
-        <div class="collapse multi-collapse{{ show_select_student }}" id="SelectStudentButton">
+        <div class="SelectStudentButton collapse multi-collapse in{{ show_select_student }}" id="SelectStudentButton">
             <div class="card card-body">
                 <h4 class="border-bottom mb-2 h4">Active Students</h4>
                 <div>
@@ -57,9 +57,9 @@
         </div>
         {% set show_add_student = '' %}
         {% if panel_active.get('add_student') %}
-            {% set show_add_student = ' in show' %}
+            {% set show_add_student = ' show' %}
         {% endif %}
-        <div class="collapse multi-collapse{{ show_add_student }}" id="AddStudentButton">
+        <div class="AddStudentButton collapse multi-collapse in{{ show_add_student }}" id="AddStudentButton">
             <div class="card card-body">
                 <h4 class="border-bottom mb-2 h4">Add Student</h4>
                 <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
