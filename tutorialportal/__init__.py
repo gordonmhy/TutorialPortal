@@ -21,9 +21,11 @@ def create_app(config):
     from tutorialportal.main.routes import main
     from tutorialportal.tutors.info.routes import tutors_info
     from tutorialportal.tutors.student_manager.routes import tutors_student_manager
+    from tutorialportal.errors.handlers import errors
 
     app.register_blueprint(main)
     app.register_blueprint(tutors_info)
     app.register_blueprint(tutors_student_manager)
+    app.register_blueprint(errors)
 
     return app

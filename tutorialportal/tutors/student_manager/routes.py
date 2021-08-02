@@ -77,7 +77,7 @@ def student_manager_selected(student_username, page=None):
         panel_active['attendance'] = True
     student = Student.query.filter_by(username=student_username).first_or_404()
     if student.tutor_username != current_user.username:
-        abort(401)
+        abort(403)
     student_credentials_form = StudentCredentialsForm()
     add_attendance_form = AddAttendanceForm()
     if student_credentials_form.student_credentials_submit.data:
@@ -142,7 +142,7 @@ def make_inactive(student_username):
         abort(403)
     student = Student.query.get(student_username)
     if student.tutor_username != current_user.username:
-        abort(401)
+        abort(403)
     if student:
         student.active = False
         db.session.commit()
@@ -160,7 +160,7 @@ def make_active(student_username):
         abort(403)
     student = Student.query.get(student_username)
     if student.tutor_username != current_user.username:
-        abort(401)
+        abort(403)
     if student:
         student.active = True
         db.session.commit()
@@ -181,7 +181,7 @@ def remove_student(student_username):
     attendance = Attendance.query.filter_by(username=student_username)
     if student:
         if student.tutor_username != current_user.username:
-            abort(401)
+            abort(403)
         name = student.name
         db.session.delete(student)
         db.session.delete(user)
