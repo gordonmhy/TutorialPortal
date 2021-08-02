@@ -29,7 +29,7 @@
         {% if panel_active.get('credentials') %}
             {% set show_credentials = ' in show' %}
         {% endif %}
-        <div class="collapse multi-collapse{{ show_credentials }}" id="CredentialsButton">
+        <div class="CredentialsButton collapse multi-collapse{{ show_credentials }}" id="CredentialsButton">
             <div class="card card-body">
                 <h4 class="border-bottom mb-2 h4">Credentials</h4>
                 <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
@@ -80,7 +80,7 @@
         {% if panel_active.get('attendance') %}
             {% set show_attendance = ' in show' %}
         {% endif %}
-        <div class="collapse multi-collapse{{ show_attendance }}" id="AttendanceButton">
+        <div class="AttendanceButton collapse multi-collapse{{ show_attendance }}" id="AttendanceButton">
             <div class="card card-body">
                 <h3 class="border-bottom mb-2 h4">Attendance Record</h3>
                 <table class="table">
@@ -126,7 +126,7 @@
                 </div>
             </div>
         </div>
-        <div class="collapse multi-collapse{{ show_attendance }}" id="AttendanceButton">
+        <div class="AttendanceButton collapse multi-collapse{{ show_attendance }}" id="AttendanceButton">
             <div class="card card-body">
                 <h4 class="border-bottom mb-2 h4">Add Attendance</h4>
                 <form method="POST" action="" class="row gy-3 gx-3 align-items-center">
