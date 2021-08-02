@@ -7,15 +7,20 @@ import re
 
 
 class AddStudentForm(FlaskForm):
-    name = StringField('Student Name', validators=[DataRequired(), Length(max=50)])
-    s_phone = StringField('Student\'s phone')
-    p_phone = StringField('Parent\'s phone')
-    p_rel = StringField('Parent-Child Relationship', validators=[Length(max=20)])
-    lesson_day = StringField('Day(s) of lessons', validators=[DataRequired(), Length(min=3, max=30)])
-    lesson_time = StringField('Start time of Lessons', validators=[DataRequired()])
-    lesson_duration = FloatField('Duration of lessons (hours)', validators=[DataRequired()])
-    lesson_fee = FloatField('Charge per lesson', validators=[DataRequired()])
-    remarks = TextAreaField('Remarks', render_kw={"rows": 1})
+    name = StringField('Student Name', render_kw={'placeholder': 'e.g. Peter Chan'},
+                       validators=[DataRequired(), Length(max=50)])
+    s_phone = StringField('Student\'s phone (Optional)', render_kw={'placeholder': 'e.g. 91234567'})
+    p_phone = StringField('Parent\'s phone (Optional)')
+    p_rel = StringField('Parent-Child Relationship', render_kw={'placeholder': 'e.g. Mother'},
+                        validators=[Length(max=20)])
+    lesson_day = StringField('Day(s) of lessons', render_kw={'placeholder': 'e.g. Mon,Thur'},
+                             validators=[DataRequired(), Length(min=3, max=30)])
+    lesson_time = StringField('Start time of lessons', render_kw={'placeholder': 'e.g. 16:30'},
+                              validators=[DataRequired()])
+    lesson_duration = FloatField('Duration of lessons (hours)', render_kw={'placeholder': 'e.g. 1.5'},
+                                 validators=[DataRequired()])
+    lesson_fee = FloatField('Charge per lesson', render_kw={'placeholder': 'e.g. 240'}, validators=[DataRequired()])
+    remarks = TextAreaField('Remarks (Optional)', render_kw={'rows': 1})
     add_student_submit = SubmitField('Submit')
 
     def validate_name(self, name):
@@ -40,15 +45,20 @@ class AddStudentForm(FlaskForm):
 
 
 class StudentCredentialsForm(FlaskForm):
-    name = StringField('Student Name', validators=[DataRequired(), Length(max=50)])
-    s_phone = StringField('Student\'s phone')
-    p_phone = StringField('Parent\'s phone')
-    p_rel = StringField('Parent-Child Relationship', validators=[Length(max=20)])
-    lesson_day = StringField('Day(s) of lessons', validators=[DataRequired(), Length(min=3, max=30)])
-    lesson_time = StringField('Start time of Lessons', validators=[DataRequired()])
-    lesson_duration = FloatField('Duration of lessons (hours)', validators=[DataRequired()])
-    lesson_fee = FloatField('Charge per lesson', validators=[DataRequired()])
-    remarks = TextAreaField('Remarks', render_kw={"rows": 1})
+    name = StringField('Student Name', render_kw={'placeholder': 'e.g. Peter Chan'},
+                       validators=[DataRequired(), Length(max=50)])
+    s_phone = StringField('Student\'s phone (Optional)', render_kw={'placeholder': 'e.g. 91234567'})
+    p_phone = StringField('Parent\'s phone (Optional)')
+    p_rel = StringField('Parent-Child Relationship', render_kw={'placeholder': 'e.g. Mother'},
+                        validators=[Length(max=20)])
+    lesson_day = StringField('Day(s) of lessons', render_kw={'placeholder': 'e.g. Mon,Thur'},
+                             validators=[DataRequired(), Length(min=3, max=30)])
+    lesson_time = StringField('Start time of lessons', render_kw={'placeholder': 'e.g. 16:30'},
+                              validators=[DataRequired()])
+    lesson_duration = FloatField('Duration of lessons (hours)', render_kw={'placeholder': 'e.g. 1.5'},
+                                 validators=[DataRequired()])
+    lesson_fee = FloatField('Charge per lesson', render_kw={'placeholder': 'e.g. 240'}, validators=[DataRequired()])
+    remarks = TextAreaField('Remarks (Optional)', render_kw={'rows': 1})
     student_credentials_submit = SubmitField('Save Changes')
 
     def validate_name(self, name):
@@ -74,11 +84,11 @@ class StudentCredentialsForm(FlaskForm):
 
 class AddAttendanceForm(FlaskForm):
     lesson_date = DateField('Date', default=datetime.datetime.now().date(), format='%Y-%m-%d',
-                            validators=[DataRequired(message='Invalid date. (YYYY-MM-DD)')])
-    lesson_time = StringField('Time', validators=[DataRequired()])
-    lesson_duration = StringField('Duration (hrs)', validators=[DataRequired()])
-    lesson_fee = FloatField('Charge ($)', validators=[DataRequired()])
-    remarks = TextAreaField('Remarks', render_kw={"rows": 1})
+                            render_kw={'placeholder': 'e.g. 2021-05-04'}, validators=[DataRequired(message='Invalid date. (YYYY-MM-DD)')])
+    lesson_time = StringField('Time', render_kw={'placeholder': 'e.g. 16:30'}, validators=[DataRequired()])
+    lesson_duration = StringField('Duration (hrs)', render_kw={'placeholder': 'e.g. 1.5'}, validators=[DataRequired()])
+    lesson_fee = FloatField('Charge ($)', render_kw={'placeholder': 'e.g. 400'}, validators=[DataRequired()])
+    remarks = TextAreaField('Remarks', render_kw={'rows': 1})
     add_attendance_submit = SubmitField('Submit')
 
     def validate_lesson_time(self, lesson_time):
