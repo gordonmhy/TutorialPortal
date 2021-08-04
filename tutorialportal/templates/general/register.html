@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="col-sm-3"></div>
+    <div class="col-md-6">
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-2 h4">Register (Tutor)</legend>
+                {% set form_elements = [form.username, form.name, form.email, form.password, form.confirm_password] %}
+                {% for element in form_elements %}
+                    <div class="form-group">
+                        {{ element.label(class="form-control-label") }}
+                        {% if element.errors %}
+                            {{ element(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in element.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ element(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </fieldset>
+            <div class="form-group" style="padding-top: 15px">
+                {{ form.submit(class="btn btn-dark") }}
+            </div>
+            {% with messages = get_flashed_messages(with_categories=true, category_filter=['danger', 'success']) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="text-{{ category }}" style="padding-top: 9px">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <!--
+            <small class="text-muted" style="padding-top: 10px">
+                <a href="#">Forgot Password?</a>
+            </small>
+            -->
+        </form>
+    </div>
+{% endblock content %}

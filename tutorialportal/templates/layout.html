@@ -37,8 +37,11 @@
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
                                 {% if current_user.tutor %}
-                                    <li><a class="dropdown-item" href="{{ url_for('tutors_info.info') }}">Information and Controls</a></li>
-                                    <li><a class="dropdown-item" href="{{ url_for('tutors_student_manager.student_manager') }}">Student Manager</a></li>
+                                    <li><a class="dropdown-item" href="{{ url_for('tutors_info.info') }}">Information
+                                        and Controls</a></li>
+                                    <li><a class="dropdown-item"
+                                           href="{{ url_for('tutors_student_manager.student_manager') }}">Student
+                                        Manager</a></li>
                                 {% else %}
                                     <li><a class="dropdown-item" href="#">Credentials</a></li>
                                     <li><a class="dropdown-item" href="#">Attendance Record</a></li>
@@ -47,14 +50,18 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('main.logout') }}">Logout</a>
+                            <a href="{{ url_for('main.logout') }}">Logout</a>
                         </li>
                     {% endif %}
                 </ul>
                 {% if not current_user.is_authenticated %}
-                    <span class="navbar-text">
-                            Please Log In to Continue
-                        </span>
+                    <span class="navbar-nav nav-item">
+                        {% if page_name == 'Login' %}
+                            <a class="nav-link" href="{{ url_for('main.register') }}">Register (Tutor)</a>
+                        {% else %}
+                            <a class="nav-link" href="{{ url_for('main.login') }}">Login</a>
+                        {% endif %}
+                    </span>
                 {% endif %}
             </div>
         </div>
