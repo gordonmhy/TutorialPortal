@@ -48,7 +48,7 @@ def student_manager(page=None):
                               tutor_username=current_user.username, active=True)
             db.session.add(student)
             db.session.commit()
-            flash('Student added.\nUsername: {}\nPassword: {}'.format(username, password), 'success')
+            flash('ADD Success: Student \nUsername: {}\nPassword: {}'.format(username, password), 'success')
             return redirect(url_for('tutors_student_manager.student_manager', student_username=username))
         if page is None:
             panel_active['add_student'] = True
@@ -92,7 +92,7 @@ def student_manager_selected(student_username, page=None):
             student.lesson_fee = student_credentials_form.lesson_fee.data
             student.remark = student_credentials_form.remarks.data
             db.session.commit()
-            flash('Credentials updated for {}.'.format(student.name), 'success')
+            flash('UPDATE Success: Credentials ({}).'.format(student.name), 'success')
         if page is None:
             panel_active['credentials'] = True
     elif add_attendance_form.add_attendance_submit.data:
@@ -105,7 +105,9 @@ def student_manager_selected(student_username, page=None):
                                     remark=add_attendance_form.remarks.data)
             db.session.add(attendance)
             db.session.commit()
-            flash('Attendance added for {}.'.format(student.name), 'success')
+            flash('ADD Success: Attendance ({} {}) added for {}.'.format(add_attendance_form.lesson_date.data,
+                                                            add_attendance_form.lesson_time.data, student.name),
+                  'success')
         else:
             flash('Some of your input may be invalid.', 'danger')
         if page is None:
@@ -113,22 +115,22 @@ def student_manager_selected(student_username, page=None):
     else:
         if page is None:
             panel_active['attendance'] = True
-        student_credentials_form.name.data = student.name
-        student_credentials_form.s_phone.data = student.s_phone
-        student_credentials_form.p_phone.data = student.p_phone
-        student_credentials_form.p_rel.data = student.p_rel
-        student_credentials_form.lesson_day.data = student.lesson_day
-        student_credentials_form.lesson_time.data = student.lesson_time
-        student_credentials_form.lesson_duration.data = student.lesson_duration
-        student_credentials_form.lesson_fee.data = student.lesson_fee
-        student_credentials_form.remarks.data = student.remark
-        add_attendance_form.lesson_time.data = student.lesson_time
-        add_attendance_form.lesson_duration.data = student.lesson_duration
-        add_attendance_form.lesson_fee.data = student.lesson_fee
+    student_credentials_form.name.data = student.name
+    student_credentials_form.s_phone.data = student.s_phone
+    student_credentials_form.p_phone.data = student.p_phone
+    student_credentials_form.p_rel.data = student.p_rel
+    student_credentials_form.lesson_day.data = student.lesson_day
+    student_credentials_form.lesson_time.data = student.lesson_time
+    student_credentials_form.lesson_duration.data = student.lesson_duration
+    student_credentials_form.lesson_fee.data = student.lesson_fee
+    student_credentials_form.remarks.data = student.remark
+    add_attendance_form.lesson_time.data = student.lesson_time
+    add_attendance_form.lesson_duration.data = student.lesson_duration
+    add_attendance_form.lesson_fee.data = student.lesson_fee
     # Student Attendance Record
     attendance_page = request.args.get('p', 1, type=int)
     student_attendance = Attendance.query.filter_by(username=student.username).order_by(
-        Attendance.lesson_date.desc()).paginate(page=attendance_page, per_page=7)
+        Attendance.lesson_date.desc()).paginate(page=attendance_page, per_page=5)
     return render_template('tutors/student_manager_selected.html', page_name='Student Manager', site=site,
                            panel_active=panel_active, student=student,
                            student_credentials_form=student_credentials_form,
@@ -146,7 +148,7 @@ def make_inactive(student_username):
     if student:
         student.active = False
         db.session.commit()
-        flash('Student {} has been made inactive.'.format(student.name), 'success')
+        flash('SET INACTIVE Success: Student {}'.format(student.name), 'success')
         return redirect(
             url_for('tutors_student_manager.student_manager_selected', student_username=student_username,
                     page='credentials'))
@@ -164,7 +166,7 @@ def make_active(student_username):
     if student:
         student.active = True
         db.session.commit()
-        flash('Student {} has been made active.'.format(student.name), 'success')
+        flash('SET ACTIVE Success: Student ({})'.format(student.name), 'success')
         return redirect(
             url_for('tutors_student_manager.student_manager_selected', student_username=student_username,
                     page='credentials'))
@@ -188,7 +190,7 @@ def remove_student(student_username):
         for record in attendance:
             db.session.delete(record)
         db.session.commit()
-        flash('Student {} deleted.'.format(name), 'success')
+        flash('DELETE Success: Student ({})'.format(name), 'success')
         return redirect(url_for('tutors_student_manager.student_manager'))
     abort(403)
 
@@ -203,9 +205,11 @@ def remove_attendance(attendance_id):
     if student:
         if student.tutor_username != current_user.username:
             abort(403)
+        date = attendance.lesson_date
+        time = attendance.lesson_time
         db.session.delete(attendance)
         db.session.commit()
-        flash('Attendance of student {} deleted.'.format(student.name), 'success')
+        flash('DELETE Success: Attendance ({} {}) of {}'.format(date, time, student.name), 'success')
         return redirect(url_for('tutors_student_manager.student_manager_selected', page='attendance',
                                 student_username=student.username))
     abort(403)

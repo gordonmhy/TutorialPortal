@@ -53,9 +53,9 @@
                         </div>
                     {% endfor %}
                     <div class="form-group" style="padding-top: 5px">
-                        {{ student_credentials_form.student_credentials_submit(class="btn btn-dark") }}
+                        {{ student_credentials_form.student_credentials_submit(class="btn btn-dark mb-xs-1") }}
                         <a href="{{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, page='credentials') }}"
-                           class="btn btn-outline-secondary" style="margin-left: 5px">Discard Unsaved Changes</a>
+                           class="btn btn-outline-secondary" style="margin-top: 5px">Discard Unsaved Changes</a>
                     </div>
                 </form>
                 <div class="d-flex flex-wrap">
@@ -66,10 +66,10 @@
                     {% else %}
                         <a href="{{ url_for('tutors_student_manager.make_active', student_username=student.username) }}"
                            class="btn btn-outline-success flex-fill col-md-4"
-                           style="margin-top: 15px; margin-right: 5px">Make Active</a>
+                           style="margin-top: 15px; margin-inside: 5px">Make Active</a>
                     {% endif %}
                     <button type="button" class="btn btn-outline-danger flex-fill col-md-4" data-bs-toggle="modal"
-                            data-bs-target="#DeleteStudentButton" style="margin-top: 15px; margin-left: 5px">
+                            data-bs-target="#DeleteStudentButton" style="margin-top: 15px; margin-inline: 5px">
                         Remove Student
                     </button>
                 </div>
@@ -192,7 +192,7 @@
     </div>
     {% for a_record in student_attendance.items %}
         <div class="AttendanceDetailModal modal fade" id="AttendanceMore{{ a_record.id }}" data-bs-keyboard="false"
-             tabindex="-1" aria-labelledby="backdropLabel" aria-hidden="true">
+             tabindex="-1" aria-labelledby="backdropLabel" data-bs-dismiss="modal" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">

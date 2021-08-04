@@ -21,6 +21,7 @@ function deleteAttendanceWindows() {
     })
     $('.DeleteAttendanceRecordRegretButton').on('click', () => {
         $(".modal-backdrop").remove()
+        $('body').addClass('modal-open');
     })
 }
 
