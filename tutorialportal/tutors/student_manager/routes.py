@@ -191,3 +191,21 @@ def remove_student(student_username):
         flash('Student {} deleted.'.format(name), 'success')
         return redirect(url_for('tutors_student_manager.student_manager'))
     abort(403)
+
+
+@tutors_student_manager.route('/remove/attendance/<string:attendance_id>', methods=['POST'])
+@login_required
+def remove_attendance(attendance_id):
+    if current_user.tutor is False:
+        abort(403)
+    attendance = Attendance.query.filter_by(id=attendance_id).first_or_404()
+    student = Student.query.get(attendance.username)
+    if student:
+        if student.tutor_username != current_user.username:
+            abort(403)
+        db.session.delete(attendance)
+        db.session.commit()
+        flash('Attendance of student {} deleted.'.format(student.name), 'success')
+        return redirect(url_for('tutors_student_manager.student_manager_selected', page='attendance',
+                                student_username=student.username))
+    abort(403)

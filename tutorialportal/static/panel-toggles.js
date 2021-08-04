@@ -15,6 +15,16 @@ function studentManagerPanels() {
     })
 }
 
+function deleteAttendanceWindows() {
+    $('.DeleteAttendanceRecordButton').on('click', () => {
+        $('.AttendanceDetailModal').hide()
+    })
+    $('.DeleteAttendanceRecordRegretButton').on('click', () => {
+        $(".modal-backdrop").remove()
+    })
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     studentManagerPanels()
+    deleteAttendanceWindows()
 })

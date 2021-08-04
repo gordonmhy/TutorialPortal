@@ -69,7 +69,7 @@
                            style="margin-top: 15px; margin-right: 5px">Make Active</a>
                     {% endif %}
                     <button type="button" class="btn btn-outline-danger flex-fill col-md-4" data-bs-toggle="modal"
-                            data-bs-target="#DeleteButton" style="margin-top: 15px; margin-left: 5px">
+                            data-bs-target="#DeleteStudentButton" style="margin-top: 15px; margin-left: 5px">
                         Remove Student
                     </button>
                 </div>
@@ -101,7 +101,9 @@
                             <td>{{ a_record.lesson_duration }} hrs</td>
                             <td>${{ a_record.lesson_fee }}</td>
                             <td>
-                                <a class="btn btn-outline-secondary" href="#">More</a>
+                                <button class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                        data-bs-target="#AttendanceMore{{ a_record.id }}">More
+                                </button>
                             </td>
                         </tr>
                     {% endfor %}
@@ -167,7 +169,7 @@
             </a>
         </div>
     {% endif %}
-    <div class="modal fade" id="DeleteButton" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    <div class="modal fade" id="DeleteStudentButton" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
          aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -188,4 +190,74 @@
             </div>
         </div>
     </div>
+    {% for a_record in student_attendance.items %}
+        <div class="AttendanceDetailModal modal fade" id="AttendanceMore{{ a_record.id }}" data-bs-keyboard="false"
+             tabindex="-1" aria-labelledby="backdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="backdropLabel">Attendance Record Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-borderless">
+                            <tr>
+                                <th>Student:</th>
+                                <td>{{ student.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date/Time:</th>
+                                <td>{{ a_record.lesson_date }} / {{ a_record.lesson_time }}</td>
+                            </tr>
+                            <tr>
+                                <th>Duration:</th>
+                                <td>{{ a_record.lesson_duration }} hours</td>
+                            </tr>
+                            <tr>
+                                <th>Charge (HKD):</th>
+                                <td>${{ a_record.lesson_fee }}</td>
+                            </tr>
+                            <tr>
+                                <th>Remarks:</th>
+                                <td>{{ a_record.remark }}</td>
+                            </tr>
+                            <tr>
+                                <th>Last Modified:</th>
+                                <td>{{ a_record.dt_attendance }}</td>
+                            </tr>
+                        </table>
+                        <div class="d-flex flex-wrap">
+                            <!--<button class="btn btn-outline-secondary flex-fill" style="margin: 3px">Edit Record</button>-->
+                            <button class="DeleteAttendanceRecordButton btn btn-outline-danger flex-fill" data-bs-toggle="modal"
+                                    data-bs-target="#DeleteAttendance{{ a_record.id }}Button" style="margin: 3px">Delete
+                                Record
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="DeleteAttendance{{ a_record.id }}Button" data-bs-backdrop="static" data-bs-keyboard="false"
+             tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Confirm Removal</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        This action will likely affect the insights and analytics generated from past tutorial sessions.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark DeleteAttendanceRecordRegretButton" data-bs-dismiss="modal">Regret</button>
+                        <form method="POST"
+                              action="{{ url_for('tutors_student_manager.remove_attendance', attendance_id=a_record.id) }}">
+                            <input type="submit" class="btn btn-danger" value="Remove Anyway">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock content %}
