@@ -94,8 +94,14 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {% set tmp_count = {'value': highlight_count} %}
                     {% for a_record in student_attendance.items %}
-                        <tr style="vertical-align: middle">
+                        {% if tmp_count.value > 0 %}
+                            <tr class="table-secondary" style="vertical-align: middle">
+                            {% if tmp_count.update({'value': tmp_count.value - 1}) %}{% endif %}
+                        {% else %}
+                            <tr style="vertical-align: middle">
+                        {% endif %}
                             <th scope="row">{{ a_record.lesson_date }}</th>
                             <td>{{ a_record.lesson_time }}</td>
                             <td>{{ a_record.lesson_duration }} hrs</td>

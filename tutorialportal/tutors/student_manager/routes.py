@@ -10,6 +10,8 @@ from tutorialportal.config_test import site
 import datetime
 import random
 
+from tutorialportal.tutors.student_manager.utils import get_highlight_count
+
 tutors_student_manager = Blueprint('tutors_student_manager', __name__)
 
 
@@ -115,6 +117,7 @@ def student_manager_selected(student_username, page=None):
                   'success')
         else:
             flash('Some of your input may be invalid.', 'danger')
+        panel_active['attendance'] = True
     elif add_payment_form.add_payment_submit.data:
         if add_payment_form.validate_on_submit():
             payment = FeeSubmission(username=student_username, submission_date=add_payment_form.submission_date.data,
@@ -122,13 +125,12 @@ def student_manager_selected(student_username, page=None):
             db.session.add(payment)
             db.session.commit()
             flash('ADD Success: Payment ({} ${}) added for {}.'.format(add_payment_form.submission_date.data,
-                                                                      add_payment_form.amount.data,
-                                                                      student.name),
+                                                                       add_payment_form.amount.data,
+                                                                       student.name),
                   'success')
         else:
             flash('Some of your input may be invalid.', 'danger')
-        if page is None:
-            panel_active['payment'] = True
+        panel_active['payment'] = True
     else:
         if page is None:
             panel_active['attendance'] = True
@@ -155,7 +157,8 @@ def student_manager_selected(student_username, page=None):
                            panel_active=panel_active, student=student,
                            student_credentials_form=student_credentials_form,
                            add_attendance_form=add_attendance_form, add_payment_form=add_payment_form,
-                           student_attendance=student_attendance, student_payment=student_payment)
+                           student_attendance=student_attendance, student_payment=student_payment,
+                           highlight_count=get_highlight_count(student.username, page=page_num))
 
 
 @tutors_student_manager.route('/make_inactive/<string:student_username>')
