@@ -228,16 +228,18 @@
                         </table>
                         <div class="d-flex flex-wrap">
                             <!--<button class="btn btn-outline-secondary flex-fill" style="margin: 3px">Edit Record</button>-->
-                            <button class="DeleteAttendanceRecordButton btn btn-outline-danger flex-fill" data-bs-toggle="modal"
-                                    data-bs-target="#DeleteAttendance{{ a_record.id }}Button" style="margin: 3px">Delete
-                                Record
+                            <button class="DeleteAttendanceRecordButton btn btn-outline-danger flex-fill"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#DeleteAttendance{{ a_record.id }}Button" data-bs-dismiss="modal"
+                                    style="margin: 3px">Delete Record
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="DeleteAttendance{{ a_record.id }}Button" data-bs-backdrop="static" data-bs-keyboard="false"
+        <div class="modal fade" id="DeleteAttendance{{ a_record.id }}Button" data-bs-backdrop="static"
+             data-bs-keyboard="false"
              tabindex="-1"
              aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -250,7 +252,10 @@
                         This action will likely affect the insights and analytics generated from past tutorial sessions.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-dark DeleteAttendanceRecordRegretButton" data-bs-dismiss="modal">Regret</button>
+                        <button type="button" class="btn btn-dark DeleteAttendanceRecordRegretButton"
+                                data-bs-toggle="modal" data-bs-target="#AttendanceMore{{ a_record.id }}"
+                                data-bs-dismiss="modal">Regret
+                        </button>
                         <form method="POST"
                               action="{{ url_for('tutors_student_manager.remove_attendance', attendance_id=a_record.id) }}">
                             <input type="submit" class="btn btn-danger" value="Remove Anyway">
