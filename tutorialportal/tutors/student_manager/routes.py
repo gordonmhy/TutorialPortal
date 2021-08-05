@@ -2,8 +2,9 @@ from flask import Blueprint, abort, flash, request, redirect, render_template, u
 from flask_login import current_user, login_required
 
 from tutorialportal import db, bcrypt
-from tutorialportal.tutors.student_manager.forms import AddStudentForm, StudentCredentialsForm, AddAttendanceForm
-from tutorialportal.models import Student, User, Attendance
+from tutorialportal.tutors.student_manager.forms import AddStudentForm, StudentCredentialsForm, AddAttendanceForm, \
+    AddPaymentForm
+from tutorialportal.models import Student, User, Attendance, FeeSubmission
 from tutorialportal.config_test import site
 
 import datetime
@@ -80,6 +81,7 @@ def student_manager_selected(student_username, page=None):
         abort(403)
     student_credentials_form = StudentCredentialsForm()
     add_attendance_form = AddAttendanceForm()
+    add_payment_form = AddPaymentForm()
     if student_credentials_form.student_credentials_submit.data:
         if student_credentials_form.validate_on_submit():
             student.name = student_credentials_form.name.data
@@ -93,6 +95,8 @@ def student_manager_selected(student_username, page=None):
             student.remark = student_credentials_form.remarks.data
             db.session.commit()
             flash('UPDATE Success: Credentials ({}).'.format(student.name), 'success')
+        else:
+            flash('Some of your input may be invalid.', 'danger')
         if page is None:
             panel_active['credentials'] = True
     elif add_attendance_form.add_attendance_submit.data:
@@ -106,12 +110,25 @@ def student_manager_selected(student_username, page=None):
             db.session.add(attendance)
             db.session.commit()
             flash('ADD Success: Attendance ({} {}) added for {}.'.format(add_attendance_form.lesson_date.data,
-                                                            add_attendance_form.lesson_time.data, student.name),
+                                                                         add_attendance_form.lesson_time.data,
+                                                                         student.name),
+                  'success')
+        else:
+            flash('Some of your input may be invalid.', 'danger')
+    elif add_payment_form.add_payment_submit.data:
+        if add_payment_form.validate_on_submit():
+            payment = FeeSubmission(username=student_username, submission_date=add_payment_form.submission_date.data,
+                                    amount=add_payment_form.amount.data, remark=add_payment_form.remarks.data)
+            db.session.add(payment)
+            db.session.commit()
+            flash('ADD Success: Payment ({} ${}) added for {}.'.format(add_payment_form.submission_date.data,
+                                                                      add_payment_form.amount.data,
+                                                                      student.name),
                   'success')
         else:
             flash('Some of your input may be invalid.', 'danger')
         if page is None:
-            panel_active['attendance'] = True
+            panel_active['payment'] = True
     else:
         if page is None:
             panel_active['attendance'] = True
@@ -127,14 +144,18 @@ def student_manager_selected(student_username, page=None):
     add_attendance_form.lesson_time.data = student.lesson_time
     add_attendance_form.lesson_duration.data = student.lesson_duration
     add_attendance_form.lesson_fee.data = student.lesson_fee
+    add_payment_form.amount.data = student.lesson_fee
     # Student Attendance Record
-    attendance_page = request.args.get('p', 1, type=int)
+    page_num = request.args.get('p', 1, type=int)
     student_attendance = Attendance.query.filter_by(username=student.username).order_by(
-        Attendance.lesson_date.desc()).paginate(page=attendance_page, per_page=5)
+        Attendance.lesson_date.desc()).paginate(page=page_num, per_page=5)
+    student_payment = FeeSubmission.query.filter_by(username=student.username).order_by(
+        FeeSubmission.submission_date.desc()).paginate(page=page_num, per_page=5)
     return render_template('tutors/student_manager_selected.html', page_name='Student Manager', site=site,
                            panel_active=panel_active, student=student,
                            student_credentials_form=student_credentials_form,
-                           add_attendance_form=add_attendance_form, student_attendance=student_attendance)
+                           add_attendance_form=add_attendance_form, add_payment_form=add_payment_form,
+                           student_attendance=student_attendance, student_payment=student_payment)
 
 
 @tutors_student_manager.route('/make_inactive/<string:student_username>')
@@ -211,5 +232,25 @@ def remove_attendance(attendance_id):
         db.session.commit()
         flash('DELETE Success: Attendance ({} {}) of {}'.format(date, time, student.name), 'success')
         return redirect(url_for('tutors_student_manager.student_manager_selected', page='attendance',
+                                student_username=student.username))
+    abort(403)
+
+
+@tutors_student_manager.route('/remove/payment/<string:payment_id>', methods=['POST'])
+@login_required
+def remove_payment(payment_id):
+    if current_user.tutor is False:
+        abort(403)
+    payment = FeeSubmission.query.filter_by(id=payment_id).first_or_404()
+    student = Student.query.get(payment.username)
+    if student:
+        if student.tutor_username != current_user.username:
+            abort(403)
+        date = payment.submission_date
+        amount = payment.amount
+        db.session.delete(payment)
+        db.session.commit()
+        flash('DELETE Success: Payment ({} ${}) of {}'.format(date, amount, student.name), 'success')
+        return redirect(url_for('tutors_student_manager.student_manager_selected', page='payment',
                                 student_username=student.username))
     abort(403)

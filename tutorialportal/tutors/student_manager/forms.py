@@ -95,3 +95,12 @@ class AddAttendanceForm(FlaskForm):
     def validate_lesson_time(self, lesson_time):
         if not re.search('^[012]\d:[0-5]\d$', lesson_time.data):
             raise ValidationError('Invalid lesson time. Must be XX:XX, e.g., 13:30')
+
+
+class AddPaymentForm(FlaskForm):
+    submission_date = DateField('Date', default=datetime.datetime.now().date(), format='%Y-%m-%d',
+                                render_kw={'placeholder': 'e.g. 2021-05-04'},
+                                validators=[DataRequired(message='Invalid date. (YYYY-MM-DD)')])
+    amount = FloatField('Charge ($)', render_kw={'placeholder': 'e.g. 400'}, validators=[DataRequired()])
+    remarks = TextAreaField('Remarks', render_kw={'rows': 1})
+    add_payment_submit = SubmitField('Submit')
