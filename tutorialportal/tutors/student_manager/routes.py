@@ -148,17 +148,18 @@ def student_manager_selected(student_username, page=None):
     add_attendance_form.lesson_fee.data = student.lesson_fee
     add_payment_form.amount.data = student.lesson_fee
     # Student Attendance Record
-    page_num = request.args.get('p', 1, type=int)
+    page_num_a = request.args.get('ap', 1, type=int)
+    page_num_p = request.args.get('pp', 1, type=int)
     student_attendance = Attendance.query.filter_by(username=student.username).order_by(
-        Attendance.lesson_date.desc()).paginate(page=page_num, per_page=5)
+        Attendance.lesson_date.desc()).paginate(page=page_num_a, per_page=5)
     student_payment = FeeSubmission.query.filter_by(username=student.username).order_by(
-        FeeSubmission.submission_date.desc()).paginate(page=page_num, per_page=5)
+        FeeSubmission.submission_date.desc()).paginate(page=page_num_p, per_page=5)
     return render_template('tutors/student_manager_selected.html', page_name='Student Manager', site=site,
                            panel_active=panel_active, student=student,
                            student_credentials_form=student_credentials_form,
                            add_attendance_form=add_attendance_form, add_payment_form=add_payment_form,
                            student_attendance=student_attendance, student_payment=student_payment,
-                           highlight_count=get_highlight_count(student.username, page=page_num))
+                           highlight_count=get_highlight_count(student.username, page=page_num_a))
 
 
 @tutors_student_manager.route('/make_inactive/<string:student_username>')

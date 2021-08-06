@@ -120,11 +120,11 @@
                         {% if page_number %}
                             {% if student_attendance.page == page_number %}
                                 <a class="btn btn-dark col-1" href="
-        {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, p=page_number, page='attendance') }}">
+        {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, ap=page_number, page='attendance') }}">
                                     {{ page_number }}</a>
                             {% else %}
                                 <a class="btn btn-outline-dark col-1" href="
-        {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, p=page_number, page='attendance') }}">
+        {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, ap=page_number, page='attendance') }}">
                                     {{ page_number }}</a>
                             {% endif %}
                         {% else %}
@@ -200,11 +200,11 @@
                         {% if page_number %}
                             {% if student_payment.page == page_number %}
                                 <a class="btn btn-dark col-1" href="
-        {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, p=page_number, page='payment') }}">
+        {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, pp=page_number, page='payment') }}">
                                     {{ page_number }}</a>
                             {% else %}
                                 <a class="btn btn-outline-dark col-1" href="
-        {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, p=page_number, page='payment') }}">
+        {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, pp=page_number, page='payment') }}">
                                     {{ page_number }}</a>
                             {% endif %}
                         {% else %}
