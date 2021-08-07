@@ -6,11 +6,10 @@ from tutorialportal.tutors.student_manager.forms import AddStudentForm, StudentC
     AddPaymentForm
 from tutorialportal.models import Student, User, Attendance, FeeSubmission
 from tutorialportal.config_test import site
+from tutorialportal.tutors.student_manager.utils import get_highlight_count, get_all_invoice_items
 
 import datetime
 import random
-
-from tutorialportal.tutors.student_manager.utils import get_highlight_count
 
 tutors_student_manager = Blueprint('tutors_student_manager', __name__)
 
@@ -159,7 +158,8 @@ def student_manager_selected(student_username, page=None):
                            student_credentials_form=student_credentials_form,
                            add_attendance_form=add_attendance_form, add_payment_form=add_payment_form,
                            student_attendance=student_attendance, student_payment=student_payment,
-                           highlight_count=get_highlight_count(student.username, page=page_num_a))
+                           highlight_count=get_highlight_count(student.username, page=page_num_a),
+                           all_invoice_items=get_all_invoice_items(student_username))
 
 
 @tutors_student_manager.route('/make_inactive/<string:student_username>')

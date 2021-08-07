@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+    {% set months = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'August', 9: 'September', 10: 'October', 11: 'November', 12: 'December', 13: 'All'} %}
     {% if student %}
         <div>
             {% with messages = get_flashed_messages(with_categories=true, category_filter=['danger', 'success']) %}
@@ -98,20 +99,20 @@
                     {% for a_record in student_attendance.items %}
                         {% if tmp_count.value > 0 %}
                             <tr class="table-secondary" style="vertical-align: middle">
-                            {% if tmp_count.update({'value': tmp_count.value - 1}) %}{% endif %}
-                        {% else %}
+                                {% if tmp_count.update({'value': tmp_count.value - 1}) %}{% endif %}
+                                {% else %}
                             <tr style="vertical-align: middle">
                         {% endif %}
-                            <th scope="row">{{ a_record.lesson_date }}</th>
-                            <td>{{ a_record.lesson_time }}</td>
-                            <td>{{ a_record.lesson_duration }} hrs</td>
-                            <td>${{ a_record.lesson_fee }}</td>
-                            <td>
-                                <button class="btn btn-outline-secondary" data-bs-toggle="modal"
-                                        data-bs-target="#AttendanceMore{{ a_record.id }}">More
-                                </button>
-                            </td>
-                        </tr>
+                    <th scope="row">{{ a_record.lesson_date }}</th>
+                    <td>{{ a_record.lesson_time }}</td>
+                    <td>{{ a_record.lesson_duration }} hrs</td>
+                    <td>${{ a_record.lesson_fee }}</td>
+                    <td>
+                        <button class="btn btn-outline-secondary" data-bs-toggle="modal"
+                                data-bs-target="#AttendanceMore{{ a_record.id }}">More
+                        </button>
+                    </td>
+                    </tr>
                     {% endfor %}
                     </tbody>
                 </table>
@@ -170,6 +171,33 @@
         {% if panel_active.get('payment') %}
             {% set show_payment = ' in show' %}
         {% endif %}
+        <div class="PaymentButton collapse multi-collapse{{ show_payment }}" id="PaymentButton">
+            <div class="card card-body">
+                <h3 class="border-bottom mb-2 h4">Generate Invoice</h3>
+                <div class="accordion" id="accordionInvoice">
+                    <div class="accordion-item">
+                        <h4 class="accordion-header" id="accordion-heading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordion-collapse" aria-expanded="false"
+                                    aria-controls="flush-collapseOne">
+                                Select Period
+                            </button>
+                        </h4>
+                        <div id="accordion-collapse" class="accordion-collapse collapse"
+                             aria-labelledby="accordion-heading" data-bs-parent="#accordionInvoice">
+                            <div class="accordion-body">
+                                {% for month_number, month_english in months.items() %}
+                                    <button class="btn" data-bs-toggle="modal"
+                                            data-bs-target="#Invoice{{ month_number }}Button">
+                                        {{ month_english }}({{ month_number }})
+                                    </button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="PaymentButton collapse multi-collapse{{ show_payment }}" id="PaymentButton">
             <div class="card card-body">
                 <h3 class="border-bottom mb-2 h4">Payment Record</h3>
@@ -416,6 +444,66 @@
                               action="{{ url_for('tutors_student_manager.remove_payment', payment_id=p_record.id) }}">
                             <input type="submit" class="btn btn-danger" value="Remove Anyway">
                         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    {% for month_number, month_english in months.items() %}
+        <div class="modal fade" id="Invoice{{ month_number }}Button" data-bs-backdrop="static"
+             data-bs-keyboard="false"
+             tabindex="-1"
+             aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Invoice ({{ student.username }})</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {% set invoice_items = all_invoice_items[month_number - 1] %}
+                        <table class="table table-borderless">
+                            <tr>
+                                <th>Student:</th>
+                                <td>{{ student.name }}</td>
+                                <th>Period:</th>
+                                <td>{{ month_english }} ({{ month_number }})</td>
+                            </tr>
+                        </table>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Lesson Date</th>
+                                <th>Owing Amount ($)</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% set count = {'value': 0} %}
+                            {% for record in invoice_items[2] %}
+                                <tr>
+                                    <td>{{ record[0].lesson_date }}</td>
+                                    <td>{{ record[1] }}</td>
+                                </tr>
+                                {% if count.update({'value': 1}) %}{% endif %}
+                            {% endfor %}
+                            {% if count['value'] == 0 %}
+                                <tr>
+                                    <td>nil</td>
+                                    <td>nil</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                        <table class="table table-borderless">
+                            <tr>
+                                <th>Outstanding Amount ({{ month_english }}):</th>
+                                <td>${{ invoice_items[1] }}</td>
+                            </tr>
+                            <tr>
+                                <th>Total Arrears:</th>
+                                <td>${{ invoice_items[0] }}</td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </div>
