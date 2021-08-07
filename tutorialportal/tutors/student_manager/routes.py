@@ -6,7 +6,8 @@ from tutorialportal.tutors.student_manager.forms import AddStudentForm, StudentC
     AddPaymentForm
 from tutorialportal.models import Student, User, Attendance, FeeSubmission
 from tutorialportal.config_test import site
-from tutorialportal.tutors.student_manager.utils import get_highlight_count, get_all_invoice_items
+from tutorialportal.tutors.student_manager.utils import get_highlight_count, get_all_invoice_items, day_dictionary, \
+    convert_days, day_list
 
 import datetime
 import random
@@ -44,7 +45,8 @@ def student_manager(page=None):
             db.session.add(user)
             student = Student(username=username, name=add_student_form.name.data, s_phone=add_student_form.s_phone.data,
                               p_phone=add_student_form.p_phone.data, p_rel=add_student_form.p_rel.data,
-                              lesson_day=add_student_form.lesson_day.data, lesson_time=add_student_form.lesson_time.data
+                              lesson_day=','.join(convert_days(add_student_form.lesson_day.data)),
+                              lesson_time=add_student_form.lesson_time.data
                               , lesson_duration=add_student_form.lesson_duration.data,
                               lesson_fee=add_student_form.lesson_fee.data, remark=add_student_form.remarks.data,
                               tutor_username=current_user.username, active=True)
@@ -89,7 +91,7 @@ def student_manager_selected(student_username, page=None):
             student.s_phone = student_credentials_form.s_phone.data
             student.p_phone = student_credentials_form.p_phone.data
             student.p_rel = student_credentials_form.p_rel.data
-            student.lesson_day = student_credentials_form.lesson_day.data
+            student.lesson_day = ','.join(convert_days(student_credentials_form.lesson_day.data))
             student.lesson_time = student_credentials_form.lesson_time.data
             student.lesson_duration = student_credentials_form.lesson_duration.data
             student.lesson_fee = student_credentials_form.lesson_fee.data
@@ -137,7 +139,7 @@ def student_manager_selected(student_username, page=None):
     student_credentials_form.s_phone.data = student.s_phone
     student_credentials_form.p_phone.data = student.p_phone
     student_credentials_form.p_rel.data = student.p_rel
-    student_credentials_form.lesson_day.data = student.lesson_day
+    student_credentials_form.lesson_day.data = ','.join([day_list[int(i)] for i in student.lesson_day.split(',')])
     student_credentials_form.lesson_time.data = student.lesson_time
     student_credentials_form.lesson_duration.data = student.lesson_duration
     student_credentials_form.lesson_fee.data = student.lesson_fee

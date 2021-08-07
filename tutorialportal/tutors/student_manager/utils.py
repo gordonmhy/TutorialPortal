@@ -42,3 +42,16 @@ def get_outstanding_amount(username):
     total_owe = sum([a_record.lesson_fee for a_record in attendance])
     total_paid = sum([p_record.amount for p_record in payment])
     return total_owe - total_paid, attendance
+
+
+day_dictionary = {'Sun': 0, 'Sunday': 0, 'Mon': 1, 'Monday': 1, 'Tue': 2, 'Tuesday': 2, 'Wed': 3, 'Wednesday': 3,
+                  'Thu': 4, 'Thur': 4, 'Thursday': 4, 'Fri': 5, 'Friday': 5, 'Sat': 6, 'Saturday': 6}
+
+day_list = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+
+
+def convert_days(lesson_days):
+    lesson_days = lesson_days.replace(' ', '').split(',')
+    result = list(map(lambda x: '-1' if x == 'None' else x, [str(day_dictionary.get(i)) for i in lesson_days]))
+    print(result)
+    return result

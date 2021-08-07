@@ -5,6 +5,8 @@ from wtforms.validators import DataRequired, Length, ValidationError
 import datetime
 import re
 
+from tutorialportal.tutors.student_manager.utils import convert_days
+
 
 class AddStudentForm(FlaskForm):
     name = StringField('Student Name', render_kw={'placeholder': 'e.g. Peter Chan'},
@@ -14,7 +16,7 @@ class AddStudentForm(FlaskForm):
     p_rel = StringField('Parent-Child Relationship', render_kw={'placeholder': 'e.g. Mother'},
                         validators=[Length(max=20)])
     lesson_day = StringField('Day(s) of lessons', render_kw={'placeholder': 'e.g. Mon,Thur'},
-                             validators=[DataRequired(), Length(min=3, max=30)])
+                             validators=[DataRequired(), Length(min=3, max=40)])
     lesson_time = StringField('Start time of lessons', render_kw={'placeholder': 'e.g. 16:30'},
                               validators=[DataRequired()])
     lesson_duration = FloatField('Duration of lessons (hours)', render_kw={'placeholder': 'e.g. 1.5'},
@@ -28,8 +30,10 @@ class AddStudentForm(FlaskForm):
             raise ValidationError('Invalid name!')
 
     def validate_lesson_day(self, lesson_day):
-        if not re.search('^([A-Z][a-z]{2,3})([,][A-Z][a-z]{2,3}){0,6}$', lesson_day.data):
+        if not re.search('^([A-Z][a-z]{2,3})([, ]+[A-Z][a-z]{2,3}){0,6}$', lesson_day.data):
             raise ValidationError('Invalid day(s)!  E.g., \'Tue,Thur\'')
+        if '-1' in convert_days(lesson_day.data):
+            raise ValidationError('Please check the spelling of the days. E.g., Thursday/Thur/Thu are acceptable.')
 
     def validate_lesson_time(self, lesson_time):
         if not re.search('^\d{2}:\d{2}$', lesson_time.data):
@@ -52,7 +56,7 @@ class StudentCredentialsForm(FlaskForm):
     p_rel = StringField('Parent-Child Relationship', render_kw={'placeholder': 'e.g. Mother'},
                         validators=[Length(max=20)])
     lesson_day = StringField('Day(s) of lessons', render_kw={'placeholder': 'e.g. Mon,Thur'},
-                             validators=[DataRequired(), Length(min=3, max=30)])
+                             validators=[DataRequired(), Length(min=3, max=40)])
     lesson_time = StringField('Start time of lessons', render_kw={'placeholder': 'e.g. 16:30'},
                               validators=[DataRequired()])
     lesson_duration = FloatField('Duration of lessons (hours)', render_kw={'placeholder': 'e.g. 1.5'},
@@ -66,8 +70,10 @@ class StudentCredentialsForm(FlaskForm):
             raise ValidationError('Invalid name!')
 
     def validate_lesson_day(self, lesson_day):
-        if not re.search('^([A-Z][a-z]{2,3})([,][A-Z][a-z]{2,3}){0,6}$', lesson_day.data):
+        if not re.search('^([A-Z][a-z]{2,3})([, ]+[A-Z][a-z]{2,3}){0,6}$', lesson_day.data):
             raise ValidationError('Invalid day(s)!  E.g., \'Tue,Thur\'')
+        if '-1' in convert_days(lesson_day.data):
+            raise ValidationError('Please check the spelling of the days. E.g., Thursday/Thur/Thu are acceptable.')
 
     def validate_lesson_time(self, lesson_time):
         if not re.search('^[012]\d:[0-5]\d$', lesson_time.data):

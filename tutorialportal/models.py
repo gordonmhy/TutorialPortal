@@ -37,7 +37,7 @@ class Student(db.Model):
     s_phone = db.Column(db.String(8))
     p_phone = db.Column(db.String(8))
     p_rel = db.Column(db.String(20))
-    lesson_day = db.Column(db.String(30), nullable=False)
+    lesson_day = db.Column(db.String(13), nullable=False)
     lesson_time = db.Column(db.String(5), nullable=False)
     lesson_duration = db.Column(db.String(5), nullable=False)
     lesson_fee = db.Column(db.Float, nullable=False)
