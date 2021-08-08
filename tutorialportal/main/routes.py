@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 from tutorialportal.main.forms import LoginForm, RegistrationForm
 from tutorialportal.models import User, Tutor
-from tutorialportal.config_test import site_en
+from tutorialportal.config import site_en
 from tutorialportal import bcrypt, db
 
 import random
@@ -13,6 +13,7 @@ main = Blueprint('main', __name__)
 
 @main.route('/login', methods=['POST', 'GET'])
 def login():
+    show_intro = request.method == 'GET'
     if current_user.is_authenticated:
         return redirect(url_for('main.home'))
     form = LoginForm()
@@ -27,7 +28,7 @@ def login():
             next_page = request.args.get('next')
             return redirect(next_page if next_page else url_for('main.home'))
         flash('* Incorrect username or password', 'danger')
-    return render_template('general/login.html', page_name='Login', form=form, site=site_en)
+    return render_template('general/login.html', page_name='Login', form=form, site=site_en, show_intro=show_intro)
 
 
 @main.route('/register', methods=['POST', 'GET'])

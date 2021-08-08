@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
-from tutorialportal.config_test import site_en
+from tutorialportal.config import site_en
 from tutorialportal.tutors.info.utils import generate_calender
 
 tutors_info = Blueprint('tutors_info', __name__)

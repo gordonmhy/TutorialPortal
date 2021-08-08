@@ -5,7 +5,7 @@ from tutorialportal import db, bcrypt
 from tutorialportal.tutors.student_manager.forms import AddStudentForm, StudentCredentialsForm, AddAttendanceForm, \
     AddPaymentForm
 from tutorialportal.models import Student, User, Attendance, FeeSubmission
-from tutorialportal.config_test import site_en
+from tutorialportal.config import site_en
 from tutorialportal.tutors.student_manager.utils import get_highlight_count, get_all_invoice_items, day_dictionary, \
     convert_days, day_list
 
