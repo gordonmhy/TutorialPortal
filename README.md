@@ -1,21 +1,18 @@
 # Tutorial Portal
-A simple portal written on top of the Python [Flask](https://flask.palletsprojects.com/en/2.0.x/) framework for managing private tutorial sessions.
+A private-tutorial management system written on top of the Python [Flask](https://flask.palletsprojects.com/en/2.0.x/) framework for managing private tutorial sessions.
 
-### Background
-* Being a private Math tutor, I have been using the Notes app on my phone to record my students' attendance and payment record. It has been really troublesome and repetitive especially when I have to use lots of 'spaces' to format the lists and tables in the records.
-* I have searched for tools and apps as I wished to find one that solves my problems, but there seemed not to be one that was free of charge.
-* That is how I come up with the idea of creating an online portal for myself (and possibly other private tutors!)
+### Live Demo
+* A [live demo](https://tutdemo.pythonanywhere.com) is hosted on [PythonAnywhere](https://www.pythonanywhere.com).
+* Some functionalities are broken since they are yet to be implemented: Students' accounts, tutors' Credentials Panel and Insights and Analytics Panel.
+* The demo is MERELY FOR TESTING and you are advised NOT to provide sensitive or private information.
+* Begin testing by registering an account and logging into the site.
 
 ### Features
-* Accounts for admins (tutors) and students
-* Admin:
+* Accounts for tutors and students
+* Tutors:
     * Calendar view of weekly schedule
     * Student Manager - Attendance, Payment and student credentials management (of individual students)
     * View insights and analytics (with visual charts and numbers)
     
 * Student:
     * View personal attendance and payment record
-
-### Plan
-* Complete implementation for personal use
-* Deploy application such that tutors can register on the platform
