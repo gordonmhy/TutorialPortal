@@ -11,6 +11,6 @@ tutors_info = Blueprint('tutors_info', __name__)
 @login_required
 def info():
     calendar = generate_calender(current_user.username)
-    return render_template('tutors/info.html', page_name='Information', site=site)
+    return render_template('tutors/info.html', page_name='Information', site=site, calendar=calendar)
 
 
