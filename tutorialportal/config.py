@@ -6,13 +6,31 @@ class Config:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///data.db'
 
 
-site = {
+supported_languages = ['en', 'zh']
+
+site_en = {
     'name': 'Tutorial Portal',
     'a_panels': [
         ('Information and Controls',
-         'View all your personal info, tutorial plans, and anything else important in this '
-         'panel.', 'tutors_info.info'),
-        ('Student Management Panel', 'View, control and manipulate the attendance, tutorial plan, payment history and '
-                                     'info of individual students.', 'tutors_student_manager.student_manager')
+         'View all your personal information, weekly tutorial schedule and generated insights such as charts, '
+         'aggregated data and decision-driving info on this panel.',
+         'tutors_info.info'),
+        ('Student Management Panel',
+         'View, control and manipulate the attendance, tutorial plan, payment history and credentials of individual '
+         'students.',
+         'tutors_student_manager.student_manager')
+    ]
+}
+
+
+site_zh = {
+    'name': '私補學生管理平台',
+    'a_panels': [
+        ('資訊及管理版面',
+         '閱覽及管控你的個人資料、每週私補行程，以及觀看電腦生成的圖表及數據，幫助你作出更明智的決策。',
+         'tutors_info.info'),
+        ('學生管理版面',
+         '閱覽及管控你各個學生的課堂出席狀況、學費付款紀錄，以及其個人資料、補習時數及費用等情況。',
+         'tutors_student_manager.student_manager')
     ]
 }

@@ -5,7 +5,7 @@ from tutorialportal import db, bcrypt
 from tutorialportal.tutors.student_manager.forms import AddStudentForm, StudentCredentialsForm, AddAttendanceForm, \
     AddPaymentForm
 from tutorialportal.models import Student, User, Attendance, FeeSubmission
-from tutorialportal.config_test import site
+from tutorialportal.config_test import site_en
 from tutorialportal.tutors.student_manager.utils import get_highlight_count, get_all_invoice_items, day_dictionary, \
     convert_days, day_list
 
@@ -58,7 +58,7 @@ def student_manager(page=None):
             panel_active['add_student'] = True
     return render_template('tutors/student_manager.html', page_name='Student Manager',
                            add_student_form=add_student_form,
-                           site=site, panel_active=panel_active, active_students=active_students,
+                           site=site_en, panel_active=panel_active, active_students=active_students,
                            inactive_students=inactive_students)
 
 
@@ -155,7 +155,7 @@ def student_manager_selected(student_username, page=None):
         Attendance.lesson_date.desc()).paginate(page=page_num_a, per_page=5)
     student_payment = FeeSubmission.query.filter_by(username=student.username).order_by(
         FeeSubmission.submission_date.desc()).paginate(page=page_num_p, per_page=5)
-    return render_template('tutors/student_manager_selected.html', page_name='Student Manager', site=site,
+    return render_template('tutors/student_manager_selected.html', page_name='Student Manager', site=site_en,
                            panel_active=panel_active, student=student,
                            student_credentials_form=student_credentials_form,
                            add_attendance_form=add_attendance_form, add_payment_form=add_payment_form,

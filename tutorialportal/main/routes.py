@@ -3,7 +3,7 @@ from flask_login import current_user, login_user, logout_user, login_required
 
 from tutorialportal.main.forms import LoginForm, RegistrationForm
 from tutorialportal.models import User, Tutor
-from tutorialportal.config_test import site
+from tutorialportal.config_test import site_en
 from tutorialportal import bcrypt, db
 
 import random
@@ -27,7 +27,7 @@ def login():
             next_page = request.args.get('next')
             return redirect(next_page if next_page else url_for('main.home'))
         flash('* Incorrect username or password', 'danger')
-    return render_template('general/login.html', page_name='Login', form=form, site=site)
+    return render_template('general/login.html', page_name='Login', form=form, site=site_en)
 
 
 @main.route('/register', methods=['POST', 'GET'])
@@ -44,7 +44,7 @@ def register():
         db.session.commit()
         flash('* Registration complete. Please log in.', 'success')
         return redirect(url_for('main.login'))
-    return render_template('general/register.html', page_name='Register as Tutor', form=form, site=site)
+    return render_template('general/register.html', page_name='Register as Tutor', form=form, site=site_en)
 
 
 @main.route('/logout')
@@ -58,4 +58,4 @@ def logout():
 @main.route('/home')
 @login_required
 def home():
-    return render_template('general/home.html', page_name='Home', site=site)
+    return render_template('general/home.html', page_name='Home', site=site_en)

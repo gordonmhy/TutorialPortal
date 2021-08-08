@@ -42,7 +42,7 @@
                     {% for username, name in active_students %}
                         <a href="{{ url_for('tutors_student_manager.student_manager_selected', student_username=username) }}"
                            class="btn btn-outline-success col-auto"
-                           style="min-width: 170px; margin-bottom: 5px">{{ name }}</a>
+                           style="min-width: 150px; margin-bottom: 5px">{{ name }}</a>
                     {% endfor %}
                 </div>
                 <h4 class="border-bottom mb-2 h4" style="margin-top: 5px">Inactive Students</h4>
@@ -50,7 +50,7 @@
                     {% for username, name in inactive_students %}
                         <a href="{{ url_for('tutors_student_manager.student_manager_selected', student_username=username) }}"
                            class="btn btn-outline-danger col-auto"
-                           style="min-width: 170px; margin-bottom: 5px">{{ name }}</a>
+                           style="min-width: 150px; margin-bottom: 5px">{{ name }}</a>
                     {% endfor %}
                 </div>
             </div>
