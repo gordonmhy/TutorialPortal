@@ -19,9 +19,12 @@ site_en = {
          'View, control and manipulate the attendance, tutorial plan, payment history and credentials of individual '
          'students.',
          'tutors_student_manager.student_manager')
-    ]
+    ],
+    'intro_des': 'This is a demo web application. You may start by navigating to the Register(Tutor) page, create an '
+                 'account, login and begin exploring. You are encouraged to report any issues you experience or '
+                 'even contribute to this project via Github. You can always click the bottom copyright tag to get to '
+                 'the Github repository of this project. '
 }
-
 
 site_zh = {
     'name': '私補學生管理平台',

@@ -17,4 +17,5 @@ function studentManagerPanels() {
 
 document.addEventListener('DOMContentLoaded', () => {
     studentManagerPanels()
+    $("#IntroModal").modal('show');
 })
