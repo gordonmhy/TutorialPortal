@@ -77,11 +77,14 @@ def student_manager_selected(student_username, page=None):
     }
     if page and page in panel_active.keys():
         panel_active[page] = True
-    if request.method == 'GET' and page is None:
-        panel_active['attendance'] = True
     student = Student.query.filter_by(username=student_username).first_or_404()
     if student.tutor_username != current_user.username:
         abort(403)
+    if request.method == 'GET' and page is None:
+        if student.active is False:
+            panel_active['credentials'] = True
+        else:
+            panel_active['attendance'] = True
     student_credentials_form = StudentCredentialsForm()
     add_attendance_form = AddAttendanceForm()
     add_payment_form = AddPaymentForm()
@@ -132,9 +135,6 @@ def student_manager_selected(student_username, page=None):
         else:
             flash('Some of your input may be invalid.', 'danger')
         panel_active['payment'] = True
-    else:
-        if page is None:
-            panel_active['attendance'] = True
     student_credentials_form.name.data = student.name
     student_credentials_form.s_phone.data = student.s_phone
     student_credentials_form.p_phone.data = student.p_phone
