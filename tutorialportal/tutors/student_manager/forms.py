@@ -36,8 +36,12 @@ class AddStudentForm(FlaskForm):
             raise ValidationError('Please check the spelling of the days. E.g., Thursday/Thur/Thu are acceptable.')
 
     def validate_lesson_time(self, lesson_time):
-        if not re.search('^\d{2}:\d{2}$', lesson_time.data):
-            raise ValidationError('Invalid lesson start time. Must be XX:XX, e.g., 13:30')
+        if not re.search('^[012]\d:[03]0$', lesson_time.data):
+            raise ValidationError('Invalid lesson start time. Must be XX:00 or XX:30, e.g., 13:30')
+
+    def validate_lesson_duration(self, lesson_duration):
+        if not (lesson_duration.data * 2).is_integer():
+            raise ValidationError('Invalid lesson duration. Your lesson must be in a half-hour basis (E.g., 2.5)')
 
     def validate_s_phone(self, s_phone):
         if not re.search('^[5679]\d{7}$', s_phone.data) and not s_phone.data == '':
@@ -76,8 +80,12 @@ class StudentCredentialsForm(FlaskForm):
             raise ValidationError('Please check the spelling of the days. E.g., Thursday/Thur/Thu are acceptable.')
 
     def validate_lesson_time(self, lesson_time):
-        if not re.search('^[012]\d:[0-5]\d$', lesson_time.data):
-            raise ValidationError('Invalid lesson start time. Must be XX:XX, e.g., 13:30')
+        if not re.search('^[012]\d:[03]0$', lesson_time.data):
+            raise ValidationError('Invalid lesson start time. Must be XX:00 or XX:30, e.g., 13:30')
+
+    def validate_lesson_duration(self, lesson_duration):
+        if not (lesson_duration.data * 2).is_integer():
+            raise ValidationError('Invalid lesson duration. Your lesson must be in a half-hour basis (E.g., 2.5)')
 
     def validate_s_phone(self, s_phone):
         if not re.search('^[5679]\d{7}$', s_phone.data) and not s_phone.data == '':
