@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import DateField, StringField, FloatField, TextAreaField, SubmitField
-from wtforms.validators import DataRequired, Length, ValidationError
+from wtforms.validators import DataRequired, Length, ValidationError, InputRequired
 
 import datetime
 import re
@@ -21,7 +21,7 @@ class AddStudentForm(FlaskForm):
                               validators=[DataRequired()])
     lesson_duration = FloatField('Duration of lessons (hours)', render_kw={'placeholder': 'e.g. 1.5'},
                                  validators=[DataRequired()])
-    lesson_fee = FloatField('Charge per lesson', render_kw={'placeholder': 'e.g. 240'}, validators=[DataRequired()])
+    lesson_fee = FloatField('Charge per lesson', render_kw={'placeholder': 'e.g. 240'}, validators=[InputRequired()])
     remarks = TextAreaField('Remarks (Optional)', render_kw={'rows': 1})
     add_student_submit = SubmitField('Submit')
 
@@ -36,7 +36,7 @@ class AddStudentForm(FlaskForm):
             raise ValidationError('Please check the spelling of the days. E.g., Thursday/Thur/Thu are acceptable.')
 
     def validate_lesson_time(self, lesson_time):
-        if not re.search('^[012]\d:[03]0$', lesson_time.data):
+        if not re.search('^[012]?\d:[03]0$', lesson_time.data):
             raise ValidationError('Invalid lesson start time. Must be XX:00 or XX:30, e.g., 13:30')
 
     def validate_lesson_duration(self, lesson_duration):
@@ -65,7 +65,7 @@ class StudentCredentialsForm(FlaskForm):
                               validators=[DataRequired()])
     lesson_duration = FloatField('Duration of lessons (hours)', render_kw={'placeholder': 'e.g. 1.5'},
                                  validators=[DataRequired()])
-    lesson_fee = FloatField('Charge per lesson', render_kw={'placeholder': 'e.g. 240'}, validators=[DataRequired()])
+    lesson_fee = FloatField('Charge per lesson', render_kw={'placeholder': 'e.g. 240'}, validators=[InputRequired()])
     remarks = TextAreaField('Remarks (Optional)', render_kw={'rows': 1})
     student_credentials_submit = SubmitField('Save Changes')
 
@@ -80,7 +80,7 @@ class StudentCredentialsForm(FlaskForm):
             raise ValidationError('Please check the spelling of the days. E.g., Thursday/Thur/Thu are acceptable.')
 
     def validate_lesson_time(self, lesson_time):
-        if not re.search('^[012]\d:[03]0$', lesson_time.data):
+        if not re.search('^([012]?\d:|[012]\d:?)[03]0$', lesson_time.data):
             raise ValidationError('Invalid lesson start time. Must be XX:00 or XX:30, e.g., 13:30')
 
     def validate_lesson_duration(self, lesson_duration):
@@ -100,21 +100,21 @@ class AddAttendanceForm(FlaskForm):
     lesson_date = DateField('Date', default=datetime.datetime.now().date(), format='%Y-%m-%d',
                             render_kw={'placeholder': 'e.g. 2021-05-04'},
                             validators=[DataRequired(message='Invalid date. (YYYY-MM-DD)')])
-    lesson_time = StringField('Time', render_kw={'placeholder': 'e.g. 16:30'}, validators=[DataRequired()])
+    lesson_time = StringField('Time', render_kw={'placeholder': 'e.g. 16:30'}, validators=[InputRequired()])
     lesson_duration = StringField('Duration (hrs)', render_kw={'placeholder': 'e.g. 1.5'}, validators=[DataRequired()])
-    lesson_fee = FloatField('Charge ($)', render_kw={'placeholder': 'e.g. 400'}, validators=[DataRequired()])
+    lesson_fee = FloatField('Charge ($)', render_kw={'placeholder': 'e.g. 400'}, validators=[InputRequired()])
     remarks = TextAreaField('Remarks', render_kw={'rows': 1})
     add_attendance_submit = SubmitField('Submit')
 
     def validate_lesson_time(self, lesson_time):
-        if not re.search('^[012]\d:[0-5]\d$', lesson_time.data):
-            raise ValidationError('Invalid lesson time. Must be XX:XX, e.g., 13:30')
+        if not re.search('^([012]?\d:|[012]\d:?)[03]0$', lesson_time.data):
+            raise ValidationError('Invalid lesson start time. Must be XX:00 or XX:30, e.g., 13:30')
 
 
 class AddPaymentForm(FlaskForm):
     submission_date = DateField('Date', default=datetime.datetime.now().date(), format='%Y-%m-%d',
                                 render_kw={'placeholder': 'e.g. 2021-05-04'},
                                 validators=[DataRequired(message='Invalid date. (YYYY-MM-DD)')])
-    amount = FloatField('Charge ($)', render_kw={'placeholder': 'e.g. 400'}, validators=[DataRequired()])
+    amount = FloatField('Charge ($)', render_kw={'placeholder': 'e.g. 400'}, validators=[InputRequired()])
     remarks = TextAreaField('Remarks', render_kw={'rows': 1})
     add_payment_submit = SubmitField('Submit')

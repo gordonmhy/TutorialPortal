@@ -95,7 +95,11 @@ def student_manager_selected(student_username, page=None):
             student.p_phone = student_credentials_form.p_phone.data
             student.p_rel = student_credentials_form.p_rel.data
             student.lesson_day = ','.join(convert_days(student_credentials_form.lesson_day.data))
-            student.lesson_time = student_credentials_form.lesson_time.data
+            input_lesson_time = student_credentials_form.lesson_time.data
+            student.lesson_time = input_lesson_time if len(
+                input_lesson_time) == 5 else \
+                input_lesson_time[:2] + ':' + input_lesson_time[2:] \
+                    if ':' not in input_lesson_time else '0' + input_lesson_time
             student.lesson_duration = student_credentials_form.lesson_duration.data
             student.lesson_fee = student_credentials_form.lesson_fee.data
             student.remark = student_credentials_form.remarks.data
@@ -108,8 +112,11 @@ def student_manager_selected(student_username, page=None):
     elif add_attendance_form.add_attendance_submit.data:
         if add_attendance_form.validate_on_submit():
             # Possibly add a check in timeslot overlapping
+            input_lesson_time = add_attendance_form.lesson_time.data
             attendance = Attendance(username=student.username, lesson_date=add_attendance_form.lesson_date.data,
-                                    lesson_time=add_attendance_form.lesson_time.data,
+                                    lesson_time=input_lesson_time if len(
+                                        input_lesson_time) == 5 else input_lesson_time[:2] + ':' + input_lesson_time[2:]
+                                    if ':' not in input_lesson_time else '0' + input_lesson_time,
                                     lesson_fee=add_attendance_form.lesson_fee.data,
                                     lesson_duration=add_attendance_form.lesson_duration.data,
                                     remark=add_attendance_form.remarks.data)

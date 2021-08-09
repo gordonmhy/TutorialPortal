@@ -129,7 +129,7 @@
                                     {{ page_number }}</a>
                             {% endif %}
                         {% else %}
-                            <button class="btn btn-outline-dark col-1">...</button>
+                            <button class="btn btn-outline-dark col-1" style="white-space: nowrap">...</button>
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -227,16 +227,16 @@
                     {% for page_number in student_payment.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
                         {% if page_number %}
                             {% if student_payment.page == page_number %}
-                                <a class="btn btn-dark col-1" href="
+                                <a class="btn btn-dark col-1" style="white-space: nowrap" href="
         {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, pp=page_number, page='payment') }}">
                                     {{ page_number }}</a>
                             {% else %}
-                                <a class="btn btn-outline-dark col-1" href="
+                                <a class="btn btn-outline-dark col-1" style="white-space: nowrap" href="
         {{ url_for('tutors_student_manager.student_manager_selected', student_username=student.username, pp=page_number, page='payment') }}">
                                     {{ page_number }}</a>
                             {% endif %}
                         {% else %}
-                            <button class="btn btn-outline-dark col-1">...</button>
+                            <button class="btn btn-outline-dark col-1" style="white-space: nowrap">...</button>
                         {% endif %}
                     {% endfor %}
                 </div>

@@ -29,7 +29,7 @@ def generate_calender(tutor_username):
                 continue
             for day in list(map(lambda x: int(x), student.lesson_day.split(','))):
                 slot = calendar[row][day + 1]
-                calendar[row][day + 1] = student.name if slot == '' else 'CLASH'
+                calendar[row][day + 1] = '' if slot == '' else calendar[row][day + 1] + ', ' + student.name
     # for i in calendar:
     #     print(i)
     return calendar
