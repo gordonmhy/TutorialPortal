@@ -36,7 +36,7 @@ class AddStudentForm(FlaskForm):
             raise ValidationError('Please check the spelling of the days. E.g., Thursday/Thur/Thu are acceptable.')
 
     def validate_lesson_time(self, lesson_time):
-        if not re.search('^[012]?\d:[03]0$', lesson_time.data):
+        if not re.search('^([012]?\d:|[012]\d:?)[03]0$', lesson_time.data):
             raise ValidationError('Invalid lesson start time. Must be XX:00 or XX:30, e.g., 13:30')
 
     def validate_lesson_duration(self, lesson_duration):
