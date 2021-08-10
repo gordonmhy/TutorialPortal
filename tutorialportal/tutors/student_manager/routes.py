@@ -218,7 +218,8 @@ def remove_student(student_username):
         abort(403)
     student = Student.query.get(student_username)
     user = User.query.get(student_username)
-    attendance = Attendance.query.filter_by(username=student_username)
+    attendance = Attendance.query.filter_by(username=student_username).all()
+    payment = FeeSubmission.query.filter_by(username=student_username).all()
     if student:
         if student.tutor_username != current_user.username:
             abort(403)
@@ -226,6 +227,8 @@ def remove_student(student_username):
         db.session.delete(student)
         db.session.delete(user)
         for record in attendance:
+            db.session.delete(record)
+        for record in payment:
             db.session.delete(record)
         db.session.commit()
         flash('DELETE Success: Student ({})'.format(name), 'success')

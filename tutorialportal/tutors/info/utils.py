@@ -1,5 +1,14 @@
-from tutorialportal.models import Student
+import datetime
+import base64
+from io import BytesIO
 
+import math
+from matplotlib.figure import Figure
+
+from tutorialportal.models import Student, Attendance
+
+
+# WEEKLY TUTORIAL SCHEDULE
 
 def time_to_row(time_lit):
     hour, minute = map(lambda x: int(x), time_lit.split(':'))
@@ -18,6 +27,7 @@ def generate_calender(tutor_username):
         for time in range(36):
             result = '{}:{}0'.format(time // 2 + 8, '3' if time % 2 != 0 else '0')
             yield ('0' if len(result) == 4 else '') + result
+
     itr = iter(next_time())
     for row in range(1, len(calendar)):
         calendar[row][0] = next(itr)
@@ -33,3 +43,49 @@ def generate_calender(tutor_username):
     # for i in calendar:
     #     print(i)
     return calendar
+
+
+# INSIGHTS AND ANALYTICS
+
+# Generates a half-yearly chart by default
+def generate_monthly_income_chart(tutor_username, months=6):
+    timestamp = datetime.datetime.now()
+    year, month = timestamp.year, timestamp.month - 1
+    x_axis, y_axis = [], []
+    while not (year == timestamp.year - months // 12 - (1 if months % 12 > 0 else 0) and month == (
+            timestamp.month - months - 1) % 12):
+        x_axis.append('{}-{}'.format(year, month))
+        y_axis.append(MonthlyData(tutor_username, year, month).get_income_in_month())
+        month = 12 if month - 1 <= 0 else month - 1
+        year = year - 1 if month == 12 else year
+    fig = Figure(figsize=(int(months * 0.8), 3))
+    ax = fig.subplots()
+    ax.plot(x_axis[::-1], y_axis[::-1], marker='o')
+    ax.set_xlabel('Month')
+    ax.set_ylabel('Income (HKD)')
+    ax.set_title('Monthly Income')
+    buf = BytesIO()
+    fig.savefig(buf, format="png")
+    return base64.b64encode(buf.getbuffer()).decode("ascii")
+
+
+class MonthlyData:
+
+    def __init__(self, tutor_username, year, month):
+        self.tutor_username = tutor_username
+        self.year = year
+        self.month = month
+
+    def get_income_in_month(self):
+        return sum((attendance.lesson_fee
+                    for student in Student.query.filter_by(tutor_username=self.tutor_username).all() for
+                    attendance in Attendance.query.filter_by(username=student.username).all() if
+                    int(attendance.lesson_date.split('-')[0]) == int(self.year) and int(
+                        attendance.lesson_date.split('-')[1]) == int(self.month)))
+
+    def get_monthly_student_count(self):
+        return len(set([student.username
+                        for student in Student.query.filter_by(tutor_username=self.tutor_username).all()
+                        for attendance in Attendance.query.filter_by(username=student.username).all() if
+                        int(attendance.lesson_date.split('-')[0]) == int(self.year) and int(
+                            attendance.lesson_date.split('-')[1]) == int(self.month)]))

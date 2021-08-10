@@ -5,3 +5,4 @@ flask_sqlalchemy
 flask_bcrypt
 wtforms~=2.3.3
 email_validator
+matplotlib~=3.4.2
