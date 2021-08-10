@@ -21,7 +21,7 @@ def generate_calender(tutor_username):
     itr = iter(next_time())
     for row in range(1, len(calendar)):
         calendar[row][0] = next(itr)
-    students = Student.query.filter_by(tutor_username=tutor_username).all()
+    students = Student.query.filter_by(tutor_username=tutor_username, active=True).all()
     for student in students:
         row1 = time_to_row(student.lesson_time)
         for row in range(row1, row1 + int(float(student.lesson_duration) * 2)):
