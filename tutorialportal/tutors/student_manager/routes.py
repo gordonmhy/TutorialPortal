@@ -43,10 +43,14 @@ def student_manager(page=None):
             user = User(username=username, password=bcrypt.generate_password_hash(password).decode('utf-8'),
                         tutor=False)
             db.session.add(user)
+            input_lesson_time = add_student_form.lesson_time.data
             student = Student(username=username, name=add_student_form.name.data, s_phone=add_student_form.s_phone.data,
                               p_phone=add_student_form.p_phone.data, p_rel=add_student_form.p_rel.data,
                               lesson_day=','.join(convert_days(add_student_form.lesson_day.data)),
-                              lesson_time=add_student_form.lesson_time.data
+                              lesson_time=input_lesson_time if len(
+                                  input_lesson_time) == 5 else \
+                                  input_lesson_time[:2] + ':' + input_lesson_time[2:] \
+                                      if ':' not in input_lesson_time else '0' + input_lesson_time
                               , lesson_duration=add_student_form.lesson_duration.data,
                               lesson_fee=add_student_form.lesson_fee.data, remark=add_student_form.remarks.data,
                               tutor_username=current_user.username, active=True)
