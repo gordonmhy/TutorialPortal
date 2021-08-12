@@ -2,10 +2,9 @@ import datetime
 import base64
 from io import BytesIO
 
-import math
 from matplotlib.figure import Figure
 
-from tutorialportal.models import Student, Attendance
+from tutorialportal.models import Student, Attendance, FeeSubmission
 
 
 # WEEKLY TUTORIAL SCHEDULE
@@ -48,22 +47,34 @@ def generate_calender(tutor_username):
 # INSIGHTS AND ANALYTICS
 
 # Generates a half-yearly chart by default
-def generate_monthly_income_chart(tutor_username, months=6):
+def generate_chart(tutor_username, months=6, chart_type='income'):
     timestamp = datetime.datetime.now()
     year, month = timestamp.year, timestamp.month - 1
     x_axis, y_axis = [], []
-    while not (year == timestamp.year - months // 12 - (1 if months % 12 > 0 else 0) and month == (
+    while not (year == timestamp.year - months // 12 - (1 if months % 12 > timestamp.month else 0) and month == (
             timestamp.month - months - 1) % 12):
         x_axis.append('{}-{}'.format(year, month))
-        y_axis.append(MonthlyData(tutor_username, year, month).get_income_in_month())
+        if chart_type == 'income':
+            y_axis.append(MonthlyData(tutor_username, year, month).get_income_in_month())
+        elif chart_type == 'student_count':
+            y_axis.append(MonthlyData(tutor_username, year, month).get_monthly_student_count())
+        # elif chart_type == 'attendance':
+        #
         month = 12 if month - 1 <= 0 else month - 1
         year = year - 1 if month == 12 else year
     fig = Figure(figsize=(int(months * 0.8), 3))
     ax = fig.subplots()
-    ax.plot(x_axis[::-1], y_axis[::-1], marker='o')
-    ax.set_xlabel('Month')
-    ax.set_ylabel('Income (HKD)')
-    ax.set_title('Monthly Income')
+    # y_label, title, line labels
+    metadata = []
+    if chart_type == 'income':
+        metadata = ['Income (HKD)', 'Monthly Income', ['By Attendance Record', 'By Payment Record']]
+    elif chart_type == 'student_count':
+        metadata = ['Student Count', 'Monthly Student Count', 'Student Count']
+    ax.plot(x_axis[::-1], y_axis[::-1], marker='o', label=metadata[2])
+    # ax.set_xlabel('Month')  # Label is not set due to a visual issue
+    ax.set_ylabel(metadata[0])
+    ax.set_title(metadata[1])
+    ax.legend()
     buf = BytesIO()
     fig.savefig(buf, format="png")
     return base64.b64encode(buf.getbuffer()).decode("ascii")
@@ -76,12 +87,20 @@ class MonthlyData:
         self.year = year
         self.month = month
 
+    def month_in_range(self, date):
+        return int(date.split('-')[0]) == int(self.year) and int(
+            date.split('-')[1]) == int(self.month)
+
+    # Returns income by attendance record and by payment record
     def get_income_in_month(self):
+        students = Student.query.filter_by(tutor_username=self.tutor_username).all()
         return sum((attendance.lesson_fee
-                    for student in Student.query.filter_by(tutor_username=self.tutor_username).all() for
-                    attendance in Attendance.query.filter_by(username=student.username).all() if
-                    int(attendance.lesson_date.split('-')[0]) == int(self.year) and int(
-                        attendance.lesson_date.split('-')[1]) == int(self.month)))
+                    for student in students for
+                    attendance in Attendance.query.filter_by(username=student.username).all()
+                    if self.month_in_range(attendance.lesson_date))), \
+               sum((payment.amount for student in students for
+                    payment in FeeSubmission.query.filter_by(username=student.username).all() if
+                    self.month_in_range(payment.submission_date)))
 
     def get_monthly_student_count(self):
         return len(set([student.username

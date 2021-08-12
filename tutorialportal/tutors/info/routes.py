@@ -2,7 +2,7 @@ from flask import Blueprint, render_template
 from flask_login import login_required, current_user
 
 from tutorialportal.config import site_en
-from tutorialportal.tutors.info.utils import generate_calender, MonthlyData, generate_monthly_income_chart
+from tutorialportal.tutors.info.utils import generate_calender, generate_chart
 
 tutors_info = Blueprint('tutors_info', __name__)
 
@@ -11,6 +11,18 @@ tutors_info = Blueprint('tutors_info', __name__)
 @login_required
 def info():
     calendar = generate_calender(current_user.username)
-    monthly_income_chart = generate_monthly_income_chart(current_user.username, 9)
+    monthly_income_chart = {
+        24: generate_chart(current_user.username, 24, 'income'),
+        12: generate_chart(current_user.username, 12, 'income'),
+        9: generate_chart(current_user.username, 9, 'income'),
+        6: generate_chart(current_user.username, 6, 'income')
+    }
+    monthly_student_count_chart = {
+        24: generate_chart(current_user.username, 24, 'student_count'),
+        12: generate_chart(current_user.username, 12, 'student_count'),
+        9: generate_chart(current_user.username, 9, 'student_count'),
+        6: generate_chart(current_user.username, 6, 'student_count')
+    }
     return render_template('tutors/info.html', page_name='Information', site=site_en, calendar=calendar,
-                           monthly_income_chart=monthly_income_chart)
+                           monthly_income_chart=monthly_income_chart,
+                           monthly_student_count_chart=monthly_student_count_chart)

@@ -60,8 +60,22 @@
             </h2>
             <div id="InsightsCollapse" class="accordion-collapse collapse" aria-labelledby="headingThree"
                  data-bs-parent="#InfoBodyAccordion">
-                <div class="accordion-body">
-                    <img src='data:image/png;base64,{{ monthly_income_chart }}' alt="Monthly Income Chart"/>
+                <div class="accordion-body overflow-auto text-center">
+                    <figure class="figure">
+                        <img src='data:image/png;base64,{{ monthly_income_chart.get(9) }}'
+                             alt="Monthly Income Chart"/>
+                        <figcaption class="figure-caption">You can interpret "By Attendance Record" as the
+                            expected salary you should receive in the month and "By Payment Record" as the amount that
+                            you actually received.
+                        </figcaption>
+                    </figure>
+                    <figure class="figure">
+                        <img src='data:image/png;base64,{{ monthly_student_count_chart.get(9) }}'
+                             alt="Monthly Student Count Chart"/>
+                        <figcaption class="figure-caption">You can interpret the number in each month as the peak number
+                            of distinct students attending tutorial sessions.
+                        </figcaption>
+                    </figure>
                 </div>
             </div>
         </div>
