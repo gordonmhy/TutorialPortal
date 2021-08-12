@@ -3,9 +3,11 @@ import base64
 from io import BytesIO
 
 from matplotlib.figure import Figure
+from matplotlib import pyplot as plt
 
 from tutorialportal.models import Student, Attendance, FeeSubmission
 
+plt.set_loglevel('WARNING')
 
 # WEEKLY TUTORIAL SCHEDULE
 
