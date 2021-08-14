@@ -12,17 +12,10 @@ tutors_info = Blueprint('tutors_info', __name__)
 def info():
     calendar = generate_calender(current_user.username)
     monthly_income_chart = {
-        24: generate_chart(current_user.username, 24, 'income'),
-        12: generate_chart(current_user.username, 12, 'income'),
-        9: generate_chart(current_user.username, 9, 'income'),
-        6: generate_chart(current_user.username, 6, 'income')
-    }
-    monthly_student_count_chart = {
-        24: generate_chart(current_user.username, 24, 'student_count'),
-        12: generate_chart(current_user.username, 12, 'student_count'),
-        9: generate_chart(current_user.username, 9, 'student_count'),
-        6: generate_chart(current_user.username, 6, 'student_count')
+        24: generate_chart(current_user.username, 24),
+        12: generate_chart(current_user.username, 12),
+        9: generate_chart(current_user.username, 9),
+        6: generate_chart(current_user.username, 6)
     }
     return render_template('tutors/info.html', page_name='Information', site=site_en, calendar=calendar,
-                           monthly_income_chart=monthly_income_chart,
-                           monthly_student_count_chart=monthly_student_count_chart)
+                           monthly_income_chart=monthly_income_chart)
