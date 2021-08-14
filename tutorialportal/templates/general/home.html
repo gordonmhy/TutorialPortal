@@ -7,7 +7,11 @@
                     <div class="card-body">
                         <h5 class="card-title border-bottom">{{ p_name }}</h5>
                         <p class="card-text">{{ p_des }}</p>
-                        <a href="{{ url_for(p_link) }}" class="btn btn-dark">Launch</a>
+                        {% if p_name == 'Information and Controls' %}
+                            <a href="{{ url_for(p_link) }}" class="btn btn-dark" id="LaunchInsightsButton">Launch</a>
+                        {% else %}
+                            <a href="{{ url_for(p_link) }}" class="btn btn-dark">Launch</a>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
@@ -22,5 +26,18 @@
                 </div>
             {% endfor %}
         {% endif %}
+    </div>
+    <div class="modal fade" id="LoadingInsightsModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+         aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content text-center">
+                <div class="modal-body">
+                    Generating Insights...<br><br>
+                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock content %}
