@@ -52,17 +52,21 @@ def generate_calender(tutor_username):
 def generate_chart(tutor_username, months=6):
     timestamp = datetime.datetime.now()
     year, month = timestamp.year, timestamp.month - 1
-    x_axis, y_axis = [], []
+    x_axis, y_axis = [], ([], [])
     while not (year == timestamp.year - months // 12 - (1 if months % 12 > timestamp.month else 0) and month == (
             timestamp.month - months - 1) % 12):
         x_axis.append('{}-{}'.format(year, month))
-        y_axis.append(MonthlyData(tutor_username, year, month).get_income_in_month())
+        for line, axis in enumerate(y_axis):
+            result = MonthlyData(tutor_username, year, month).get_income_in_month()
+            axis.append(result[line])
         month = 12 if month - 1 <= 0 else month - 1
         year = year - 1 if month == 12 else year
     fig = Figure(figsize=(int(months * 0.8), 3))
     ax = fig.subplots()
     # y_label, title, line labels
-    ax.plot(x_axis[::-1], y_axis[::-1], marker='o', label=['By Attendance Record', 'By Payment Record'])
+    labels = ['By Attendance Record', 'By Payment Record']
+    for i in range(len(y_axis)):
+        ax.plot(x_axis[::-1], y_axis[i][::-1], marker='o', label=labels[i])
     ax.set_ylabel('Income (HKD)')
     ax.set_title('Monthly Income')
     ax.legend()
